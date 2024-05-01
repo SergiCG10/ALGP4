@@ -90,21 +90,21 @@ int SumaPreferencias(const vector<vector<int>>& preferencias, const vector<int>&
 void SentarComensales(const vector<vector<int>>& preferencias, vector<int>& mesa, vector<int>& candidato,
     bool sentado[], int index, int& maxpref){
   if(candidato.size() == mesa.size()){ //Si la mesa candidata ha sentado a todos los comensales, comparamos
-    cout << "Candidato a solución: ";
-    PrintVector(candidato);
     int preferenciaCandidato = SumaPreferencias(preferencias, candidato);
     if(preferenciaCandidato > maxpref){
       mesa = candidato;
       maxpref = preferenciaCandidato;
     }
   }
-  for(int i = 0; i < mesa.size(); i++){
-    if(!sentado[i]){ //Si no es el mismo y no está sentado
-      candidato.push_back(i); //Sentamos al comensal
-      sentado[i] = true; //se ha sentado al comensal
-      SentarComensales(preferencias, mesa, candidato, sentado, i, maxpref);
-      candidato.pop_back();
-      sentado[i] = false;
+  else{
+    for(int i = 0; i < mesa.size(); i++){
+      if(!sentado[i]){ //Si no es el mismo y no está sentado
+        candidato.push_back(i); //Sentamos al comensal
+        sentado[i] = true; //se ha sentado al comensal
+        SentarComensales(preferencias, mesa, candidato, sentado, i, maxpref);
+        candidato.pop_back();
+        sentado[i] = false;
+      }
     }
   }
 }
