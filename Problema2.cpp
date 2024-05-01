@@ -46,6 +46,7 @@ int main (int argc, char *argv[]) {
 
   cout << "En la mesa se sentarán los comensales de la siguiente manera:" << endl;
   PrintVector(mesa);
+  cout << "Con una preferencia de: " << SumaPreferencias(vProblema, mesa) << endl;
   return 0;
 }
 
@@ -98,7 +99,7 @@ void SentarComensales(const vector<vector<int>>& preferencias, vector<int>& mesa
     }
   }
   for(int i = 0; i < mesa.size(); i++){
-    if(i != index && !sentado[i]){ //Si no es el mismo y no está sentado
+    if(!sentado[i]){ //Si no es el mismo y no está sentado
       candidato.push_back(i); //Sentamos al comensal
       sentado[i] = true; //se ha sentado al comensal
       SentarComensales(preferencias, mesa, candidato, sentado, i, maxpref);
