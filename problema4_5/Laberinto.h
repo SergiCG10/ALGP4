@@ -20,7 +20,6 @@ class Laberinto{
         int** recorridos;
         int lado;
         pair<int,int> posicionActual;
-        pair<int,int> posicionAnterior;
 
         /**
          * @brief Funcion privada inicializar. Inicializa el laberinto con f filas y columnas
@@ -144,12 +143,12 @@ class Laberinto{
         /**
          *
          */
-        void loadLaberinto(const char* fichero);
+        void loadLaberinto(string fichero);
 
         /**
          *
          */
-        void saveLaberinto(const char* fichero);
+        void saveLaberinto(string fichero);
         /**
          * @brief Funcion imprimirLaberinto. Imprime el laberinto por pantalla
          */

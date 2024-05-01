@@ -25,39 +25,50 @@ void resolverLaberinto(Laberinto& laberinto,vector<pair<int,int> >& solucion, bo
         system("clear");
     }
     
-    if(!laberinto.salida() && laberinto.abajo())
+    if(!laberinto.salida() && laberinto.abajo()){
         resolverLaberinto(laberinto, solucion, imprimirProceso);
+    }
+        
+    if(!laberinto.salida() && laberinto.derecha()){
+        resolverLaberinto(laberinto, solucion, imprimirProceso);
+    }
     
-    if(!laberinto.salida() && laberinto.derecha())
+    if(!laberinto.salida() && laberinto.izquierda()){
+        resolverLaberinto(laberinto, solucion, imprimirProceso); 
+    }
+    if(!laberinto.salida() && laberinto.arriba()){
         resolverLaberinto(laberinto, solucion, imprimirProceso);
-    
-    if(!laberinto.salida() && laberinto.izquierda())
-        resolverLaberinto(laberinto, solucion, imprimirProceso);
+    }
 
-    if(!laberinto.salida() && laberinto.arriba())
-        resolverLaberinto(laberinto, solucion, imprimirProceso);
-    
     if( !laberinto.salida()){
         solucion.pop_back();
-        laberinto.setPosicionActualTo( solucion.back().first,  solucion.back().second );
+        if(solucion.size() > 0){
+            laberinto.setPosicionActualTo( solucion.back().first,  solucion.back().second );
+        }else{
+            cerr<<"No hay solución"<<endl;
+        }
     } 
 }
 
 int main(int argc, char * argv[] ){
     bool mostrarProceso = false;
+    string directorioGuardado = "problema4_5/laberintos";
+    string archivo;
 
     if( argc == 2 || argc == 3){
-
+        
         if( argc == 3){
-            mostrarProceso = argv[3] == "s" ? true : false;
+            string aux = argv[2];
+            mostrarProceso = (aux == "s" ? true : false) ;
         }
         
         vector<pair<int,int>> solucion;
         
         Laberinto lab;
+        archivo = argv[1];
+        directorioGuardado += "/" + archivo;
+        lab.loadLaberinto( directorioGuardado );
         
-        lab.loadLaberinto( argv[2] );
-
         cout<<"El laberinto propuesto es: "<<endl;
 
         lab.imprimirLaberinto();
@@ -68,7 +79,7 @@ int main(int argc, char * argv[] ){
 
         if(lab.getLado() > 1){
             resolverLaberinto(lab, solucion, mostrarProceso);
-        
+           
             for(int i = 0; i < solucion.size(); i++){
                 cout<<"Una solución al laberinto es:"<<endl;
                 sol.setPosicionActualTo( solucion[i].first, solucion[i].second);

@@ -35,7 +35,6 @@ Laberinto::Laberinto(){
     lado = 0;
     laberinto = NULL;
     posicionActual = make_pair(0,0);
-    posicionAnterior = make_pair(0,0);
 }
 
 Laberinto::Laberinto(int l){
@@ -46,7 +45,6 @@ Laberinto::Laberinto(int l){
     inicializar(l);
     lado = l;
     posicionActual = make_pair(0,0);
-    posicionAnterior = make_pair(0,0);
 
     for(int i =0; i < l; i++){
         for(int j =0; j < l; j++){
@@ -105,7 +103,7 @@ const int& Laberinto::recorrida(int f, int c) const{
 
 int& Laberinto::recorrida(int f, int c){
     if(f < 0 || f >= this->getLado() || c < 0 || c >= this->getLado()){
-        throw out_of_range("Valor de fila o de columna erróneo");
+        throw out_of_range("recorrida::Valor de fila o de columna erróneo");
     }
     return recorridos[f][c];
 }
@@ -119,7 +117,6 @@ Laberinto::Laberinto(const Laberinto& lab){
         }
     }
     posicionActual = lab.posicionActual;
-    posicionAnterior = lab.posicionAnterior;
 
     for(int i = 0; i < lado; i++){
         for(int j = 0; j <lado; j++){
@@ -139,7 +136,6 @@ Laberinto& Laberinto::operator = (const Laberinto& lab){
     }
 
     posicionActual = lab.posicionActual;
-    posicionAnterior = lab.posicionAnterior;
 
     for(int i = 0; i < lado; i++){
         for(int j = 0; j <lado; j++){
@@ -155,7 +151,7 @@ bool Laberinto::arriba(){
     posible = (posicionActual.first -1 < 0 ) ? false : getPosicion(posicionActual.first - 1 , posicionActual.second ) && recorrida(posicionActual.first - 1, posicionActual.second) != 1;
 
     if(posible){
-        posicionAnterior = posicionActual;
+
         setPosicionActualTo(posicionActual.first - 1, posicionActual.second);
         recorrida(posicionActual.first, posicionActual.second ) = 1;
         
@@ -169,7 +165,6 @@ bool Laberinto::abajo(){
     posible = (posicionActual.first +1 >= this->getLado() ) ? false : getPosicion(posicionActual.first + 1 , posicionActual.second )&& recorrida(posicionActual.first + 1, posicionActual.second) != 1;
 
     if(posible){
-        posicionAnterior = posicionActual;
         setPosicionActualTo(posicionActual.first + 1, posicionActual.second);
         recorrida(posicionActual.first, posicionActual.second ) = 1;
         
@@ -183,7 +178,6 @@ bool Laberinto::izquierda(){
     posible = (posicionActual.second -1 < 0) ? false : getPosicion(posicionActual.first, posicionActual.second - 1 )&& recorrida(posicionActual.first, posicionActual.second-1) != 1;
 
     if(posible){
-        posicionAnterior = posicionActual;
         setPosicionActualTo(posicionActual.first, posicionActual.second -1 );
         recorrida(posicionActual.first, posicionActual.second ) = 1;
         
@@ -197,7 +191,6 @@ bool Laberinto::derecha(){
     posible = (posicionActual.second +1 >= this->getLado() ) ? false : getPosicion(posicionActual.first, posicionActual.second + 1 )&& recorrida(posicionActual.first, posicionActual.second + 1) != 1;
 
     if(posible){
-        posicionAnterior = posicionActual;
         setPosicionActualTo(posicionActual.first, posicionActual.second +1);
         recorrida(posicionActual.first, posicionActual.second ) = 1;
         
@@ -210,12 +203,13 @@ bool Laberinto::salida(){
     return ( posicionActual.first == this->getLado() -1 ) && ( posicionActual.second == this->getLado()-1 );
 }
 
-void Laberinto::loadLaberinto(const char *fichero){
+void Laberinto::loadLaberinto(string fichero){
 
     liberar();
     ifstream f(fichero);
     int lado = 0;
-
+    
+    
     if(f){
         f >> lado;
     }else{
@@ -229,6 +223,8 @@ void Laberinto::loadLaberinto(const char *fichero){
     
     inicializar(lado);
     this->lado = lado;
+    posicionActual = make_pair(0,0);
+    recorrida(0,0) = 1;
     bool aux;
     for(int i =0 ; i< lado; i++){
         for(int j = 0; j < lado; j++){
@@ -239,7 +235,7 @@ void Laberinto::loadLaberinto(const char *fichero){
     f.close();
 }
 
-void Laberinto::saveLaberinto(const char* fichero){ //REVISAR
+void Laberinto::saveLaberinto(string fichero){
 
     ofstream f(fichero);
 
