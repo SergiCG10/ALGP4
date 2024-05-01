@@ -67,7 +67,7 @@ void PrintMatriz(const vector<vector<int>>& matriz){
 
 void SolucionProblema2(const vector<vector<int>>& preferencias, vector<int>& mesa){
   mesa.clear();
-  bool* sentado = new bool[preferencias.size()];
+  vector<bool> sentado(preferencias.size(), false);
   vector<int> candidatosol;
   mesa.resize(preferencias.size());
   for(int i = 0; i < preferencias.size(); i++){
