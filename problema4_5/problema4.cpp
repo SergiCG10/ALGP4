@@ -1,58 +1,93 @@
 #include <iostream>
-
+#include <vector>
+#include <cstdlib>
+#include <cstring>
+#include <chrono>
+#include <thread>
 #include "Laberinto.h"
 
 using namespace std;
 
-void operator <<( const ostream& os, const pair<int,int>& p){
-    cout<<"["<<p.first<<", "<<p.second <<"]";
+/**
+ * @brief Función resolverLaberinto. Resuelve el laberinto pasado por parámetro
+ *
+ * @param laberinto. Laberinto para resolver
+ * @param solucion. Vector con una solucion del laberinto
+ * @param imprimirProceso. Variable que indica si se quiere imprimir el proceso de obtención del resultado, por defecto en false
+ */
+void resolverLaberinto(Laberinto& laberinto,vector<pair<int,int> >& solucion, bool imprimirProceso){
+    
+    solucion.push_back(laberinto.getPosicionActual());
+
+    if(imprimirProceso){
+        laberinto.imprimirLaberintoRecorrido();
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        system("clear");
+    }
+    
+    if(!laberinto.salida() && laberinto.abajo())
+        resolverLaberinto(laberinto, solucion, imprimirProceso);
+    
+    if(!laberinto.salida() && laberinto.derecha())
+        resolverLaberinto(laberinto, solucion, imprimirProceso);
+    
+    if(!laberinto.salida() && laberinto.izquierda())
+        resolverLaberinto(laberinto, solucion, imprimirProceso);
+
+    if(!laberinto.salida() && laberinto.arriba())
+        resolverLaberinto(laberinto, solucion, imprimirProceso);
+    
+    if( !laberinto.salida()){
+        solucion.pop_back();
+        laberinto.setPosicionActualTo( solucion.back().first,  solucion.back().second );
+    } 
 }
 
-int main(){
-    Laberinto lab(10);
-    lab.setPosicion(1,1);
-    lab.setPosicion(1,2)  ;
-    lab.setPosicion(1,4)  ;
-    lab.setPosicion(1,6)  ;
-    lab.setPosicion(1,7)  ;
-    lab.setPosicion(1,8)  ;
-    lab.setPosicion(2,1)  ;
-    lab.setPosicion(2,4)  ;
-    lab.setPosicion(2,8)  ;
-    lab.setPosicion(3,1)  ;
-    lab.setPosicion(3,3)  ;
-    lab.setPosicion(3,4)  ;
-    lab.setPosicion(3,5)  ;
-    lab.setPosicion(3,6)  ;
-    lab.setPosicion(3,7)  ;
-    lab.setPosicion(3,8)  ;
-    lab.setPosicion(4,1)  ;
-    lab.setPosicion(4,3)  ;
-    lab.setPosicion(5,1)  ;
-    lab.setPosicion(5,5)  ;
-    lab.setPosicion(5,7)  ;
-    lab.setPosicion(5,8)  ;
-    lab.setPosicion(5,9)  ;
-    lab.setPosicion(6,1)  ;
-    lab.setPosicion(6,3)  ;
-    lab.setPosicion(6,4)  ;
-    lab.setPosicion(6,5)  ;
-    lab.setPosicion(6,9)  ;
-    lab.setPosicion(7,1)  ;
-    lab.setPosicion(7,5)  ;
-    lab.setPosicion(7,7)  ;
-    lab.setPosicion(8,1)  ;
-    lab.setPosicion(8,3)  ;
-    lab.setPosicion(8,5)  ;
-    lab.setPosicion(8,7)  ;
-    lab.setPosicion(8,8)  ;
-    lab.setPosicion(8,9)  ;
-    lab.setPosicion(9,5)  ;
-    lab.imprimirLaberinto();
+int main(int argc, char * argv[] ){
+    bool mostrarProceso = false;
 
-    lab.saveLaberinto("prueba.pbm");
-    Laberinto cargado;
-    cargado.loadLaberinto("prueba.pbm");
-    cargado.imprimirLaberinto();
+    if( argc == 2 || argc == 3){
+
+        if( argc == 3){
+            mostrarProceso = argv[3] == "s" ? true : false;
+        }
+        
+        vector<pair<int,int>> solucion;
+        
+        Laberinto lab;
+        
+        lab.loadLaberinto( argv[2] );
+
+        cout<<"El laberinto propuesto es: "<<endl;
+
+        lab.imprimirLaberinto();
+        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+        system("clear");
+
+        Laberinto sol = lab;
+
+        if(lab.getLado() > 1){
+            resolverLaberinto(lab, solucion, mostrarProceso);
+        
+            for(int i = 0; i < solucion.size(); i++){
+                cout<<"Una solución al laberinto es:"<<endl;
+                sol.setPosicionActualTo( solucion[i].first, solucion[i].second);
+                sol.imprimirLaberintoRecorrido();
+                std::this_thread::sleep_for(std::chrono::milliseconds(500));
+                system("clear");
+            }
+
+            cout<<"Una solución al laberinto es:"<<endl;
+            sol.imprimirLaberintoRecorrido();
+            cout<<endl;
+        }
+        
+
+    }else{
+        cerr<<"Error al ejecutar. Número de parámetros erróneo."<<endl;
+        cerr<<"Para ejecutar uso: ./bin/problema4.bin <archivo con laberinto> "<<endl;
+        cerr<<"\topcional: s para ver el proceso de obtención del resultado\n\t\totro o nada para no verlo"<<endl;
+    }
     
+    return 0;
 }

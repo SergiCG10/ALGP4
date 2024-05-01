@@ -134,7 +134,7 @@ class Laberinto{
         /**
          * @brief Funcion derecha. Devuelve si a partir de la posición actual podemos ir hacia la derecha, en caso afirmativo, la posición actual cambia
          */
-        bool derecha();  
+        bool derecha();
 
         /**
          * @brief Funcion salida. Determina si estás en la salida o no a partir de la posicion actual
