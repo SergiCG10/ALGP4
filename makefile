@@ -1,33 +1,29 @@
-#Archivo makefile para la práctica 4 de Algorítmica
+CXX = g++
+BIN_DIR = ./bin
+FLAGS = -std=c++17
 
-all:
-	#Compilando Problema 1...
-	#@g++ -o Problema1.bin Problema1.cpp -std=c++17
+PROBLEMAS = problema2
 
-	#Compilando Problema 2...
-	@g++ -o Problema2.bin Problema2.cpp -std=c++17
-	
-	#Ejecute de la siguiente manera: ./Problema2.bin 12345 10
+# Regla de construcción para cada problema
+$(BIN_DIR)/$(PROBLEMAS): $(PROBLEMAS)/$(PROBLEMAS).cpp
+	$(CXX) $(FLAGS) -o $@.bin $<
 
-	#Compilando Problema 3...
-	#@g++ -o Problema3.bin Problema3.cpp -std=c++17
+# Regla de construcción para problema4
+problema4: $(BIN_DIR)/problema4.bin
 
-	#Compilando Problema 5...
-	@g++ -o Problema5.bin Problema5.cpp -std=c++17
-	
-problema4: problema4/problema4.cpp problema4/Laberinto.o
-	g++ -o problema4.bin problema4/problema4.cpp problema4/Laberinto.o -std=c++17
+$(BIN_DIR)/problema4.bin: problema4_5/problema4.cpp $(BIN_DIR)/Laberinto.o
+	$(CXX) $(FLAGS) -o $@ $^
 
-Laberinto.o: problema4/Laberinto.cpp problema4/Laberinto.h
-	g++ -c problema4/Laberinto.o problema4/Laberinto.cpp
+# Regla de construcción para Laberinto.o
+$(BIN_DIR)/Laberinto.o: problema4_5/Laberinto.cpp problema4_5/Laberinto.h
+	@mkdir -p $(BIN_DIR)
+	$(CXX) $(FLAGS) -o $@ -c $<
 
-#Elimina los ejecutables
+#Ejemplos de ejecución 
+	@echo Para el problema2, pruebe a ejecutar: ./bin/problema2.bin 12345 4 
+	@echo Para el problema2, pruebe a ejecutar: ./bin/problema2.bin 12345 6
+# Regla para limpiar
 clean:
-	#@rm Problema1.bin
-	@rm Problema2.bin
-	#@rm Problema3.bin
-	@rm Problema4.bin
-	@rm Laberinto.o
-	@rm Problema5.bin
-	
-.PHONY: clean
+	rm -rf $(BIN_DIR)/*.bin $(BIN_DIR)/*.o
+
+.PHONY: all clean
