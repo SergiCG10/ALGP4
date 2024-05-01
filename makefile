@@ -27,6 +27,7 @@ clean:
 	@rm Problema2.bin
 	#@rm Problema3.bin
 	@rm Problema4.bin
+	@rm Laberinto.o
 	@rm Problema5.bin
 	
 .PHONY: clean
