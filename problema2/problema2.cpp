@@ -7,7 +7,7 @@ void PrintMatriz(const vector<vector<int>>& matriz);
 void SolucionProblema2(const vector<vector<int>>& preferencias, vector<int>& mesa);
 int SumaPreferencias(const vector<vector<int>>& preferencias, const vector<int>& comensales);
 void SentarComensales(const vector<vector<int>>& preferencias, vector<int>& mesa, vector<int>& candidato,
-    bool sentado[], int& maxpref);
+    vector<bool> sentado, int& maxpref);
 
 int main (int argc, char *argv[]) {
   vector<vector<int>> vProblema;
@@ -70,12 +70,8 @@ void SolucionProblema2(const vector<vector<int>>& preferencias, vector<int>& mes
   vector<bool> sentado(preferencias.size(), false);
   vector<int> candidatosol;
   mesa.resize(preferencias.size());
-  for(int i = 0; i < preferencias.size(); i++){
-    mesa[i] = i;
-    sentado[i] = false;
-  }
-  int preferencia_mayor = SumaPreferencias(preferencias, mesa);
-  SentarComensales(preferencias, mesa, candidatosol, sentado, preferencia_mayor);
+  int sum = 0;
+  SentarComensales(preferencias, mesa, candidatosol, sentado, sum);
 }
 
 int SumaPreferencias(const vector<vector<int>>& preferencias, const vector<int>& comensales){
