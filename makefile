@@ -1,11 +1,5 @@
 #Archivo makefile para la práctica 4 de Algorítmica
 
-problema4: problema4/problema4.cpp problema4/Laberinto.o
-	g++ -o problema4.bin problema4/problema4.cpp problema4/Laberinto.o -std=c++17
-
-Laberinto.o: problema4/Laberinto.cpp problema4/Laberinto.h
-	g++ -c problema4/Laberinto.o problema4/Laberinto.cpp
-
 all:
 	#Compilando Problema 1...
 	#@g++ -o Problema1.bin Problema1.cpp -std=c++17
@@ -20,6 +14,12 @@ all:
 
 	#Compilando Problema 5...
 	@g++ -o Problema5.bin Problema5.cpp -std=c++17
+	
+problema4: problema4/problema4.cpp problema4/Laberinto.o
+	g++ -o problema4.bin problema4/problema4.cpp problema4/Laberinto.o -std=c++17
+
+Laberinto.o: problema4/Laberinto.cpp problema4/Laberinto.h
+	g++ -c problema4/Laberinto.o problema4/Laberinto.cpp
 
 #Elimina los ejecutables
 clean:
