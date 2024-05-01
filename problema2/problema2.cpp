@@ -69,9 +69,8 @@ void SolucionProblema2(const vector<vector<int>>& preferencias, vector<int>& mes
   mesa.clear();
   vector<bool> sentado(preferencias.size(), false);
   vector<int> candidatosol;
-  mesa.resize(preferencias.size());
   int sum = 0;
-  SentarComensales(preferencias, mesa, candidatosol, sentado, sum);
+    SentarComensales(preferencias, mesa, candidatosol, sentado, sum);
 }
 
 int SumaPreferencias(const vector<vector<int>>& preferencias, const vector<int>& comensales){
@@ -84,7 +83,7 @@ int SumaPreferencias(const vector<vector<int>>& preferencias, const vector<int>&
 
 void SentarComensales(const vector<vector<int>>& preferencias, vector<int>& mesa, vector<int>& candidato,
     vector<bool> sentado, int& maxpref){
-  if(candidato.size() == mesa.size()){ //Si la mesa candidata ha sentado a todos los comensales, comparamos
+  if(preferencias.size() == mesa.size()){ //Si la mesa candidata ha sentado a todos los comensales, comparamos
     int preferenciaCandidato = SumaPreferencias(preferencias, candidato);
     if(preferenciaCandidato > maxpref){
       mesa = candidato;
