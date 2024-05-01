@@ -7,7 +7,7 @@ void PrintMatriz(const vector<vector<int>>& matriz);
 void SolucionProblema2(const vector<vector<int>>& preferencias, vector<int>& mesa);
 int SumaPreferencias(const vector<vector<int>>& preferencias, const vector<int>& comensales);
 void SentarComensales(const vector<vector<int>>& preferencias, vector<int>& mesa, vector<int>& candidato,
-    bool sentado[], int index, int& maxpref);
+    bool sentado[], int& maxpref);
 
 int main (int argc, char *argv[]) {
   vector<vector<int>> vProblema;
@@ -67,7 +67,7 @@ void PrintMatriz(const vector<vector<int>>& matriz){
 
 void SolucionProblema2(const vector<vector<int>>& preferencias, vector<int>& mesa){
   mesa.clear();
-  bool* sentado = new bool[preferencias.size()];
+  vector<bool> sentado(preferencias.size(), false);
   vector<int> candidatosol;
   mesa.resize(preferencias.size());
   for(int i = 0; i < preferencias.size(); i++){
@@ -75,8 +75,7 @@ void SolucionProblema2(const vector<vector<int>>& preferencias, vector<int>& mes
     sentado[i] = false;
   }
   int preferencia_mayor = SumaPreferencias(preferencias, mesa);
-  SentarComensales(preferencias, mesa, candidatosol, sentado, 0, preferencia_mayor);
-  delete[] sentado;
+  SentarComensales(preferencias, mesa, candidatosol, sentado, preferencia_mayor);
 }
 
 int SumaPreferencias(const vector<vector<int>>& preferencias, const vector<int>& comensales){
@@ -88,23 +87,23 @@ int SumaPreferencias(const vector<vector<int>>& preferencias, const vector<int>&
 }
 
 void SentarComensales(const vector<vector<int>>& preferencias, vector<int>& mesa, vector<int>& candidato,
-    bool sentado[], int index, int& maxpref){
+    vector<bool> sentado, int& maxpref){
   if(candidato.size() == mesa.size()){ //Si la mesa candidata ha sentado a todos los comensales, comparamos
-    cout << "Candidato a solución: ";
-    PrintVector(candidato);
     int preferenciaCandidato = SumaPreferencias(preferencias, candidato);
     if(preferenciaCandidato > maxpref){
       mesa = candidato;
       maxpref = preferenciaCandidato;
     }
   }
-  for(int i = 0; i < mesa.size(); i++){
-    if(!sentado[i]){ //Si no es el mismo y no está sentado
-      candidato.push_back(i); //Sentamos al comensal
-      sentado[i] = true; //se ha sentado al comensal
-      SentarComensales(preferencias, mesa, candidato, sentado, i, maxpref);
-      candidato.pop_back();
-      sentado[i] = false;
+  else{
+    for(int i = 0; i < mesa.size(); i++){
+      if(!sentado[i]){ //Si no es el mismo y no está sentado
+        candidato.push_back(i); //Sentamos al comensal
+        sentado[i] = true; //se ha sentado al comensal
+        SentarComensales(preferencias, mesa, candidato, sentado, maxpref);
+        candidato.pop_back();
+        sentado[i] = false;
+      }
     }
   }
 }
