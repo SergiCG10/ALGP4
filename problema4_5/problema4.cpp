@@ -10,7 +10,6 @@ void operator <<( const ostream& os, const pair<int,int>& p){
 
 int main(){
     Laberinto lab(10);
-
     lab.setPosicion(1,1);
     lab.setPosicion(1,2)  ;
     lab.setPosicion(1,4)  ;
@@ -49,9 +48,11 @@ int main(){
     lab.setPosicion(8,8)  ;
     lab.setPosicion(8,9)  ;
     lab.setPosicion(9,5)  ;
+    lab.imprimirLaberinto();
 
-    Laberinto laberinto = lab;
-    laberinto.imprimirLaberinto();
-    laberinto.imprimirLaberintoRecorrido();
+    lab.saveLaberinto("prueba.pbm");
+    Laberinto cargado;
+    cargado.loadLaberinto("prueba.pbm");
+    cargado.imprimirLaberinto();
     
 }

@@ -2,6 +2,7 @@
 #define _LABERINTO
 
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 /**
@@ -140,6 +141,15 @@ class Laberinto{
          */
         bool salida();
 
+        /**
+         *
+         */
+        void loadLaberinto(const char* fichero);
+
+        /**
+         *
+         */
+        void saveLaberinto(const char* fichero);
         /**
          * @brief Funcion imprimirLaberinto. Imprime el laberinto por pantalla
          */

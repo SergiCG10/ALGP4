@@ -4,6 +4,37 @@
 
 using namespace std;
 
+/**
+ * @brief Funcion SkipWhitespaces. Funcion auxiliar para saltarnos los espacios
+ */
+char SkipWhitespaces (ifstream& f){
+  char c;
+  do{
+    c= f.get();
+  } while (isspace(c));
+  f.putback(c);
+  return c;
+}
+/**
+ * @brief Funcion readHeader. Funcion auxiliar para leer la cabecera de las imagenes de los laberintos
+ */
+bool ReadHeader (ifstream& f, int& lado){
+    int aux, aux2;
+    string linea;
+    while (SkipWhitespaces(f)=='#')
+      f.ignore(10000,'\n');
+    
+    f >> aux >> aux2;
+    lado = aux;
+    cout<<aux<<endl;
+    cout<<aux2<<endl;
+    if (f && lado>0 && lado<5000 ){
+        f.get(); // Saltamos separador
+        return true;
+    }else 
+      return false;
+}
+
 void Laberinto::inicializar(int l){
 
     laberinto = new bool* [l];
@@ -87,11 +118,10 @@ void Laberinto::setPosicion(int f, int c, bool valor /**= false*/ ){
     if(f < 0 || f >= this->getLado() || c < 0 || c >= this->getLado()){
         throw out_of_range("Valor de fila o de columna erróneo");
     }
-    if( valor == false){
+    if(valor == false){
         recorridos[f][c] = -1;
-    }else{
-        recorridos[f][c] = 0;
     }
+
     laberinto[f][c] = valor; 
 }
 
@@ -110,11 +140,12 @@ int& Laberinto::recorrida(int f, int c){
 }
 
 Laberinto::Laberinto(const Laberinto& lab){
-    lado = lab.getLado();
+    cout<<"Constructor de copia";
+    this->lado = lab.getLado();
     inicializar(lado);
     for(int i = 0; i < lado; i++){
         for(int j = 0; j <lado; j++){
-            laberinto[i][j] = lab.getPosicion(i,j);
+            this->setPosicion(i,j, lab.getPosicion(i,j));
         }
     }
 
@@ -127,12 +158,13 @@ Laberinto::Laberinto(const Laberinto& lab){
 }
 
 Laberinto& Laberinto::operator = (const Laberinto& lab){
+    cout<<"Operador de asignación";
     liberar();
-    lado = lab.getLado();
+    this->lado = lab.getLado();
     inicializar(lado);
     for(int i = 0; i < lado; i++){
         for(int j = 0; j <lado; j++){
-            laberinto[i][j] = lab.getPosicion(i,j);
+            setPosicion(i,j, lab.getPosicion(i,j));
         }
     }
 
@@ -148,7 +180,7 @@ Laberinto& Laberinto::operator = (const Laberinto& lab){
 
 bool Laberinto::arriba(){
     bool posible = false;
-    posible = (posicionActual.first -1 < 0 ) ? false : getPosicion(posicionActual.first - 1 , posicionActual.second );
+    posible = (posicionActual.first -1 < 0 ) ? false : getPosicion(posicionActual.first - 1 , posicionActual.second ) && recorrida(posicionActual.first - 1, posicionActual.second) != 1;
 
     if(posible){
         setPosicionActualTo(posicionActual.first - 1, posicionActual.second);
@@ -160,7 +192,7 @@ bool Laberinto::arriba(){
 
 bool Laberinto::abajo(){
     bool posible = false;
-    posible = (posicionActual.first +1 >= this->getLado() ) ? false : getPosicion(posicionActual.first + 1 , posicionActual.second );
+    posible = (posicionActual.first +1 >= this->getLado() ) ? false : getPosicion(posicionActual.first + 1 , posicionActual.second )&& recorrida(posicionActual.first + 1, posicionActual.second) != 1;
 
     if(posible){
         setPosicionActualTo(posicionActual.first + 1, posicionActual.second);
@@ -172,7 +204,7 @@ bool Laberinto::abajo(){
 
 bool Laberinto::izquierda(){
     bool posible = false;
-    posible = (posicionActual.second -1 < 0) ? false : getPosicion(posicionActual.first, posicionActual.second - 1 );
+    posible = (posicionActual.second -1 < 0) ? false : getPosicion(posicionActual.first, posicionActual.second - 1 )&& recorrida(posicionActual.first, posicionActual.second-1) != 1;
 
     if(posible){
         setPosicionActualTo(posicionActual.first, posicionActual.second -1 );
@@ -184,7 +216,7 @@ bool Laberinto::izquierda(){
 
 bool Laberinto::derecha(){
     bool posible = false;
-    posible = (posicionActual.second +1 >= this->getLado() ) ? false : getPosicion(posicionActual.first, posicionActual.second + 1 );
+    posible = (posicionActual.second +1 >= this->getLado() ) ? false : getPosicion(posicionActual.first, posicionActual.second + 1 )&& recorrida(posicionActual.first, posicionActual.second + 1) != 1;
 
     if(posible){
         setPosicionActualTo(posicionActual.first, posicionActual.second +1);
@@ -198,58 +230,141 @@ bool Laberinto::salida(){
     return ( posicionActual.first == this->getLado() -1 ) && ( posicionActual.second = this->getLado()-1 );
 }
 
-void Laberinto::imprimirLaberinto(){
-    cout<<endl;
-    for(int i = 0; i < lado +2; i++){
-        cout<<" ■";
+
+void Laberinto::loadLaberinto(const char *fichero){
+    liberar();
+    unsigned char *res=0;
+    int l =0;
+    ifstream f(fichero);
+        
+    if (ReadHeader(f, l)){
+      res= new unsigned char[l*l];
+      f.read(reinterpret_cast<char *>(res),l*l);
+      if (!f){
+        delete[] res;
+        res= 0;
+        cout<<"Fallo en lectura"<<endl;
+      }
+    }else{
+        cout<<"Valor erróneo de la imagen"<<endl;
     }
-    cout<<endl;
-    for(int i = 0; i < lado; i++){
-        if(i != 0){
-                cout<<" ■";
-        }else{
-            cout<<"  ";
-        }
-        for(int j = 0; j < lado; j++){
-            if( this->getPosicion(i,j) == true ){
-                cout<<"  ";
+    inicializar(l);
+    this->lado = l;
+    unsigned char** imagen = new unsigned char * [this->getLado()];
+    imagen[0] = new unsigned char [this->getLado() * this->getLado()];
+    for (int i=1; i < this->getLado(); i++)
+        imagen[i] = imagen[i-1] + this->getLado();
+
+    imagen[0] = res;
+
+    
+    
+    for(int i =0; i< this->getLado(); i++){
+        for(int j =0; j < this->getLado(); j++){
+            if( imagen[i][j] = 1){
+                this->setPosicion(i,j, true);
             }else{
-                cout<<" ■";
+                this->setPosicion(i,j, false);
             }
         }
-        if(i != lado -1){
-                cout<<" ■";
+    }
+    delete[] imagen[0];
+    delete[] imagen;
+}
+
+
+void Laberinto::saveLaberinto(const char* fichero){
+
+    unsigned char** imagen = new unsigned char * [this->getLado()];
+    imagen[0] = new unsigned char [this->getLado() * this->getLado()];
+    for (int i=1; i < this->getLado(); i++)
+        imagen[i] = imagen[i-1] + this->getLado();
+
+    for(int i = 0; i < getLado(); i++){
+        for(int j = 0; j < getLado(); j++){
+            if( this->getPosicion(i,j) == false){
+                imagen[i][j] = 0;
+            }else{
+                imagen[i][j] = 1;
+            }
+        }
+    }
+    ofstream salida(fichero, ios::binary);
+    
+    if (salida){
+        salida << "P4" << endl;
+        salida << this->getLado() << ' ' << this->getLado() << endl;
+        salida << 1 << endl;
+
+        salida.write(reinterpret_cast<const char *>(imagen),this->getLado()*this->getLado());
+    }
+    salida.close();
+    delete[] imagen[0];
+    delete[] imagen;
+}
+void Laberinto::imprimirLaberinto(){
+    if(this->lado >1){
+        cout<<endl;
+        for(int i = 0; i < lado +2; i++){
+            cout<<" ■";
         }
         cout<<endl;
+        for(int i = 0; i < lado; i++){
+            if(i != 0){
+                    cout<<" ■";
+            }else{
+                cout<<"  ";
+            }
+            for(int j = 0; j < lado; j++){
+                if( this->getPosicion(i,j) == true ){
+                    cout<<"  ";
+                }else{
+                    cout<<" ■";
+                }
+            }
+            if(i != lado -1){
+                    cout<<" ■";
+            }
+            cout<<endl;
+        }
+        for(int i = 0; i < lado +2; i++){
+            cout<<" ■";
+        }
+        cout<<endl<<endl;
+    }else{
+        cout<<"El tamaño del laberinto es demasiado pequeño, o es 0"<<endl;
     }
-    for(int i = 0; i < lado +2; i++){
-        cout<<" ■";
-    }
-    cout<<endl<<endl;
+    
 }
 void Laberinto::imprimirLaberintoRecorrido(){
-    for(int i = 0; i < lado +2; i++){
-        cout<<" ■";
-    }
-    cout<<endl;
-    for(int i = 0; i < lado; i++){
-        cout<<" ■";
-        for(int j = 0; j < lado; j++){
-            if( this->recorrida(i,j) == 0 ){
-                cout<<"  ";
-            }else if( this->recorrida(i,j) == -1){
-                cout<<" ■";
-            }else{
-                cout<<" ·";
-            }
-        }
-        
-        cout<<" ■";
-        
+    if(this->lado > 1){
         cout<<endl;
+        for(int i = 0; i < lado +2; i++){
+            cout<<" ■";
+        }
+        cout<<endl;
+        for(int i = 0; i < lado; i++){
+            cout<<" ■";
+            for(int j = 0; j < lado; j++){
+                if( this->recorrida(i,j) == 0 ){
+                    cout<<"  ";
+                }else if( this->recorrida(i,j) == -1){
+                    cout<<" ■";
+                }else{
+                    cout<<" ·";
+                }
+            }
+            
+            cout<<" ■";
+            
+            cout<<endl;
+        }
+        for(int i = 0; i < lado +2; i++){
+            cout<<" ■";
+        }
+        cout<<endl<<endl;
+    }else{
+        cout<<"El tamaño del laberinto es demasiado pequeño, o es 0"<<endl;
     }
-    for(int i = 0; i < lado +2; i++){
-        cout<<" ■";
-    }
-    cout<<endl<<endl;
+    
 }
