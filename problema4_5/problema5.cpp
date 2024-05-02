@@ -1,52 +1,66 @@
 #include <iostream>
 #include <vector>
+#include <cstdlib>
+#include <cstring>
+#include <chrono>
+#include <thread>
+#include "Laberinto.h"
+
 using namespace std;
 
-#define N 4
+void resolverLaberinto(Laberinto& laberinto,vector<pair<int,int> >& solucion, bool imprimirProceso){
 
-bool esValido(int laberinto[N][N], int x, int y) {
-    return (x >= 0 && x < N && y >= 0 && y < N && laberinto[x][y] == 1);
 }
 
-bool resolverLaberintoUtil(int laberinto[N][N], int x, int y, int solucion[N][N]) {
-    if(x == N-1 && y == N-1 && laberinto[x][y] == 1) {
-        solucion[x][y] = 1;
-        return true;
-    }
-    if(esValido(laberinto, x, y)) {
-        solucion[x][y] = 1;
-        if (resolverLaberintoUtil(laberinto, x+1, y, solucion))
-            return true;
-        if (resolverLaberintoUtil(laberinto, x, y+1, solucion))
-            return true;
-        solucion[x][y] = 0;
-        return false;
-    }
-    return false;
-}
+int main(int argc, char * argv[] ){
+    bool mostrarProceso = false;
+    string directorioGuardado = "problema4_5/laberintos";
+    string archivo;
 
-bool resolverLaberinto(int laberinto[N][N]) {
-    int solucion[N][N] = { { 0, 0, 0, 0 },
-                           { 0, 0, 0, 0 },
-                           { 0, 0, 0, 0 },
-                           { 0, 0, 0, 0 } };
-    if(resolverLaberintoUtil(laberinto, 0, 0, solucion) == false) {
-        cout << "No existe solución";
-        return false;
-    }
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++)
-            cout << solucion[i][j] << " ";
-        cout << endl;
-    }
-    return true;
-}
+    if( argc == 2 || argc == 3){
+        
+        if( argc == 3){
+            string aux = argv[2];
+            mostrarProceso = (aux == "s" ? true : false) ;
+        }
+        
+        vector<pair<int,int>> solucion;
+        
+        Laberinto lab;
+        archivo = argv[1];
+        directorioGuardado += "/" + archivo;
+        lab.loadLaberinto( directorioGuardado );
+        
+        cout<<"El laberinto propuesto es: "<<endl;
 
-int main() {
-    int laberinto[N][N] = { { 1, 0, 0, 0 },
-                            { 1, 1, 0, 1 },
-                            { 0, 1, 0, 0 },
-                            { 1, 1, 1, 1 } };
-    resolverLaberinto(laberinto);
+        lab.imprimirLaberinto();
+        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+        system("clear");
+
+        Laberinto sol = lab;
+
+        if(lab.getLado() > 1){
+            resolverLaberinto(lab, solucion, mostrarProceso);
+           
+            for(int i = 0; i < solucion.size(); i++){
+                cout<<"Una solución al laberinto es:"<<endl;
+                sol.setPosicionActualTo( solucion[i].first, solucion[i].second);
+                sol.imprimirLaberintoRecorrido();
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                system("clear");
+            }
+
+            cout<<"Una solución al laberinto es:"<<endl;
+            sol.imprimirLaberintoRecorrido();
+            cout<<endl;
+        }
+        
+
+    }else{
+        cerr<<"Error al ejecutar. Número de parámetros erróneo."<<endl;
+        cerr<<"Para ejecutar uso: ./bin/problema4.bin <archivo con laberinto> "<<endl;
+        cerr<<"\topcional: s para ver el proceso de obtención del resultado\n\t\totro o nada para no verlo"<<endl;
+    }
+    
     return 0;
 }
