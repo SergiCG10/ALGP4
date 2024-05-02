@@ -3,10 +3,10 @@
 #include <vector>
 using namespace std;
 
-int SumarPreferencias (vector<pair<int,int>> & parejas, const vector<vector<int>> & preferencias,const int & n)
+int SumarPreferencias (vector<pair<int,int>> & parejas, const vector<vector<int>> & preferencias)
 {
     int sumalocal=0;
-    for(int i=0;i<n;i++)
+    for(int i=0;i<parejas.size();i++)
         sumalocal+=preferencias[parejas[i].first][parejas[i].second];
     
     return sumalocal;
@@ -16,12 +16,14 @@ int SumarPreferencias (vector<pair<int,int>> & parejas, const vector<vector<int>
 void EncontrarParejas (const vector<vector<int>> & preferencias, const int & n, vector<pair<int,int>> & parejas, 
 vector<pair<int,int>> & Candidato, vector<bool> & libres, int & maxpref)
 {
-    cout<<"Hola"<<endl;
-    if(parejas.size()==n/2){
-        int sumacandidato=SumarPreferencias(parejas,preferencias,n);
+    
+    if(parejas.size()==Candidato.size()){
+        int sumacandidato=SumarPreferencias(parejas,preferencias);
+        //cout<<sumacandidato<<endl;
         if(sumacandidato>maxpref){
             maxpref=sumacandidato;
             Candidato=parejas;
+   
         }
     }
     else{
@@ -39,6 +41,7 @@ vector<pair<int,int>> & Candidato, vector<bool> & libres, int & maxpref)
                 if(libres[candidato]){
                     pair<int,int> aux(i,candidato);
                     parejas.push_back(aux);
+                    //cout<<"Pareja "<<i<<": "<<parejas[i].first<<" "<<parejas[i].second<<endl;
                     libres[i]=false;
                     libres[candidato]=false;
                 }
@@ -67,15 +70,15 @@ void SolucionProblema1(const vector<vector<int>> & preferencias,const int & n,ve
     
     parejas.clear();
     vector<bool> libres(n,true);
-    vector<pair<int,int>> Candidato;
+    vector<pair<int,int>> Candidato(n/2);
     int max=0;
     EncontrarParejas(preferencias, n, parejas, Candidato, libres,max);
     cout<<"Se han formado las siguientes parejas"<<endl;
-    for(int i=0;i<parejas.size();i++)
-        cout<<parejas[i].first<<" y "<<parejas[i].second<<endl;
+    for(int i=0;i<Candidato.size();i++)
+        cout<<Candidato[i].first<<" y "<<Candidato[i].second<<endl;
     
-    int ST=SumarPreferencias(parejas,preferencias,parejas.size());
-    cout<<"La satisfacción total es:\n "<<ST;
+    int ST=SumarPreferencias(Candidato,preferencias);
+    cout<<"La satisfacción total es:"<<ST<<endl;
 
 }
 
