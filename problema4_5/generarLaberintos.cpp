@@ -72,13 +72,16 @@ int main( int argc, char* argv[] ){
             case 2:
                 int f,c;
                 if(almacenado){
-                    do{
-                        cout<<"¿Que posición desea cambiar? (-1 para terminar) \t";
+
+                    cout<<"¿Que fila desea cambiar? (-1 para terminar) \t";
+                    cin>>f;
+                    while( f < -1 && f >= l.getLado()){
+                        cout<<"Numero de fila errónea, vuelva a introducir:\t";
                         cin>>f;
-                        while( f < -1 && f >= l.getLado()){
-                            cout<<"Numero de fila errónea, vuelva a introducir:\t";
-                            cin>>f;
-                        } 
+                    }
+                    cout<<"¿Que columnas de la fila "<<f<<" desea cambiar?: (Introduzca todas seguidas, -1 para terminar)"<<endl;
+                    do{
+                        
                         if(f != -1){
                             cin>>c;
                             while( c < -1 && c >= l.getLado()){
@@ -86,12 +89,11 @@ int main( int argc, char* argv[] ){
                                 cin>>c;
                             }
                             bool valor = l.getPosicion(f,c) == 0 ? 1 : 0;  
-                            cout<<"El valor de la posicion"<<f<<","<<c<<" pasará a ser "<<valor<<endl;
                             l.setPosicion(f,c, valor);
 
                         }
                         
-                    }while(f != -1);
+                    }while(c != -1);
                 }else{
                     cout<<"No hay ningún laberinto almacenado"<<endl;
                 }
@@ -99,7 +101,7 @@ int main( int argc, char* argv[] ){
                 break;
             case 3:
                 aux = directorioGuardado;
-                cout<<"¿Como desea que se llame el fichero donde va a guardar el laberinto?";
+                cout<<"¿Como desea que se llame el fichero donde va a guardar el laberinto? \t";
                 cin>>nombre;
                 aux += "/" + nombre;
 
@@ -107,7 +109,7 @@ int main( int argc, char* argv[] ){
                 break;
             case 4:
                 aux = directorioGuardado;
-                cout<<"¿Como se llama el fichero de donde va a copiar el laberinto?";
+                cout<<"¿Como se llama el fichero de donde va a copiar el laberinto? \t";
                 cin>>nombre;
                 aux += "/" + nombre;
 
