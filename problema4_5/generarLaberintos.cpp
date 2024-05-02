@@ -11,6 +11,9 @@ int main( int argc, char* argv[] ){
     string directorioGuardado;
     string aux;
     string nombre;
+    bool nombreGuardado = false;
+    string nombreFichero;
+    char respuesta = 'n';
 
     if( argc != 2 && argc != 1){
         cerr<<"Error. Parámetros incorrectos."<<endl;
@@ -71,29 +74,31 @@ int main( int argc, char* argv[] ){
                 break;
             case 2:
                 int f,c;
+                bool valor;
                 if(almacenado){
 
-                    cout<<"¿Que fila desea cambiar? (-1 para terminar) \t";
-                    cin>>f;
-                    while( f < -1 && f >= l.getLado()){
-                        cout<<"Numero de fila errónea, vuelva a introducir:\t";
-                        cin>>f;
-                    }
-                    cout<<"¿Que columnas de la fila "<<f<<" desea cambiar?: (Introduzca todas seguidas, -1 para terminar)"<<endl;
                     do{
-                        
+                        cout<<"¿Que fila desea cambiar? (-1 para terminar) \t";
+                        cin>>f;
+                        while( f < -1 && f >= l.getLado()){
+                            cout<<"Numero de fila errónea, vuelva a introducir:\t";
+                            cin>>f;
+                        }
                         if(f != -1){
-                            cin>>c;
-                            while( c < -1 && c >= l.getLado()){
-                                cout<<"Numero de columna errónea, vuelva a introducir:\t";
-                                cin>>c;
-                            }
-                            bool valor = l.getPosicion(f,c) == 0 ? 1 : 0;  
-                            l.setPosicion(f,c, valor);
+                            cout<<"¿Que columnas de la fila "<<f<<" desea cambiar?: (Introduzca todas seguidas, -1 para terminar)"<<endl;
+                            do{
+                                cin>> c;
+                                if(c >=0 && c <l.getLado() ){
+                                    valor = l.getPosicion(f,c) == 0 ? 1 : 0;  
+                                    l.setPosicion(f,c, valor);
+                                }else if( c != -1){
+                                    cout<<"Valor "<<c<<"de columna erróneo"<<endl;
+                                }
+                            }while( c != -1);
 
                         }
                         
-                    }while(c != -1);
+                    }while(f != -1);
                 }else{
                     cout<<"No hay ningún laberinto almacenado"<<endl;
                 }
@@ -101,19 +106,32 @@ int main( int argc, char* argv[] ){
                 break;
             case 3:
                 aux = directorioGuardado;
-                cout<<"¿Como desea que se llame el fichero donde va a guardar el laberinto? \t";
-                cin>>nombre;
-                aux += "/" + nombre;
+                if(nombreGuardado){
+                    cout<<"¿Desea guardar el laberinto con otro nombre? s/n \t";
+                    cin>>respuesta;
 
-                l.saveLaberinto( aux );
+                }
+
+                if(!nombreGuardado || respuesta == 's'){
+                    respuesta = 'n';
+                    cout<<"¿Como desea que se llame el fichero donde va a guardar el laberinto? \t";
+                    cin>>nombre;
+                    aux += "/" + nombre;
+                    nombreFichero = aux;
+                    nombreGuardado = true;
+                }
+                
+                l.saveLaberinto( nombreFichero );
+
                 break;
             case 4:
                 aux = directorioGuardado;
                 cout<<"¿Como se llama el fichero de donde va a copiar el laberinto? \t";
                 cin>>nombre;
                 aux += "/" + nombre;
-
-                l.loadLaberinto( aux );
+                nombreGuardado = true;
+                nombreFichero = aux;
+                l.loadLaberinto( nombreFichero );
                 almacenado = true;
                 break;
             case 5:

@@ -21,7 +21,7 @@ void resolverLaberinto(Laberinto& laberinto,vector<pair<int,int> >& solucion, bo
 
     if(imprimirProceso){
         laberinto.imprimirLaberintoRecorrido();
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         system("clear");
     }
     
@@ -84,7 +84,7 @@ int main(int argc, char * argv[] ){
                 cout<<"Una solución al laberinto es:"<<endl;
                 sol.setPosicionActualTo( solucion[i].first, solucion[i].second);
                 sol.imprimirLaberintoRecorrido();
-                std::this_thread::sleep_for(std::chrono::milliseconds(500));
+                std::this_thread::sleep_for(std::chrono::milliseconds(200));
                 system("clear");
             }
 
