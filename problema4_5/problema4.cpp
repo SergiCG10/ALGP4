@@ -43,7 +43,7 @@ void resolverLaberinto(Laberinto& laberinto,vector<pair<int,int> >& solucion, bo
     if( !laberinto.salida()){
         solucion.pop_back();
         if(solucion.size() > 0){
-            laberinto.setPosicionActualTo( solucion.back().first,  solucion.back().second );
+            laberinto.setPosicionActualTo( solucion.back() );
         }else{
             cerr<<"No hay solución"<<endl;
         }
@@ -82,7 +82,7 @@ int main(int argc, char * argv[] ){
            
             for(int i = 0; i < solucion.size(); i++){
                 cout<<"Una solución al laberinto es:"<<endl;
-                sol.setPosicionActualTo( solucion[i].first, solucion[i].second);
+                sol.setPosicionActualTo(solucion[i]);
                 sol.imprimirLaberintoRecorrido();
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
                 system("clear");

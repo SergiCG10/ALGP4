@@ -64,7 +64,7 @@ class Laberinto{
          * @param f Filas de la posición
          * @param c Columnas de la posición
          */
-        void setPosicionActualTo(int f, int c);
+        void setPosicionActualTo(pair<int,int> p);
 
         /**
          * @brief Funcion posicion. Devuelve el valor de una casilla (f,c). Función getter

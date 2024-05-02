@@ -8,7 +8,48 @@
 
 using namespace std;
 
-void resolverLaberinto(Laberinto& laberinto,vector<pair<int,int> >& solucion, bool imprimirProceso){
+void resolverLaberinto(Laberinto& l,vector<pair<int,int> >& solucion, pair<int,int> posicionExplorar, bool imprimirProceso){
+    solucion.push_back(l.getPosicionActual());
+    
+    if(!l.salida() && l.abajo()){
+
+        l.setPosicionActualTo(posicionExplorar);
+
+        if(imprimirProceso){
+            l.imprimirLaberintoRecorrido();
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            system("clear");
+        }
+    }
+        
+    if(!l.salida() && l.derecha()){
+
+
+        if(imprimirProceso){
+            l.imprimirLaberintoRecorrido();
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            system("clear");
+        }
+    }
+    
+    if(!l.salida() && l.izquierda()){
+
+
+        if(imprimirProceso){
+            l.imprimirLaberintoRecorrido();
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            system("clear");
+        }
+    }
+    if(!l.salida() && l.arriba()){
+
+
+        if(imprimirProceso){
+            l.imprimirLaberintoRecorrido();
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            system("clear");
+        }
+    }
 
 }
 
@@ -40,11 +81,11 @@ int main(int argc, char * argv[] ){
         Laberinto sol = lab;
 
         if(lab.getLado() > 1){
-            resolverLaberinto(lab, solucion, mostrarProceso);
+            resolverLaberinto(lab, solucion, lab.getPosicionActual(), mostrarProceso);
            
             for(int i = 0; i < solucion.size(); i++){
                 cout<<"Una solución al laberinto es:"<<endl;
-                sol.setPosicionActualTo( solucion[i].first, solucion[i].second);
+                sol.setPosicionActualTo( solucion[i]);
                 sol.imprimirLaberintoRecorrido();
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
                 system("clear");

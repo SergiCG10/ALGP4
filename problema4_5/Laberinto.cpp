@@ -68,12 +68,12 @@ const pair<int,int>& Laberinto::getPosicionActual() const{
     return posicionActual;
 }
 
-void Laberinto::setPosicionActualTo(int f, int c){
-    if(f < 0 || f >= this->getLado() || c < 0 || c >= this->getLado()){
+void Laberinto::setPosicionActualTo(pair<int,int> p){
+    if(p.first < 0 || p.first >= this->getLado() || p.second < 0 || p.second >= this->getLado()){
         throw out_of_range("setPosicionActualTo::Valor de fila o de columna erróneo");
     }
-    recorridos[f][c] = 1;
-    posicionActual = make_pair(f,c);
+    recorridos[p.first][p.second] = 1;
+    posicionActual = p;
 }
 
 const bool& Laberinto::getPosicion(int f, int c) const{
@@ -152,7 +152,7 @@ bool Laberinto::arriba(){
 
     if(posible){
 
-        setPosicionActualTo(posicionActual.first - 1, posicionActual.second);
+        setPosicionActualTo(make_pair(posicionActual.first - 1, posicionActual.second));
         recorrida(posicionActual.first, posicionActual.second ) = 1;
         
     }
@@ -165,7 +165,7 @@ bool Laberinto::abajo(){
     posible = (posicionActual.first +1 >= this->getLado() ) ? false : getPosicion(posicionActual.first + 1 , posicionActual.second )&& recorrida(posicionActual.first + 1, posicionActual.second) != 1;
 
     if(posible){
-        setPosicionActualTo(posicionActual.first + 1, posicionActual.second);
+        setPosicionActualTo( make_pair(posicionActual.first + 1, posicionActual.second));
         recorrida(posicionActual.first, posicionActual.second ) = 1;
         
     }
@@ -178,7 +178,7 @@ bool Laberinto::izquierda(){
     posible = (posicionActual.second -1 < 0) ? false : getPosicion(posicionActual.first, posicionActual.second - 1 )&& recorrida(posicionActual.first, posicionActual.second-1) != 1;
 
     if(posible){
-        setPosicionActualTo(posicionActual.first, posicionActual.second -1 );
+        setPosicionActualTo( make_pair(posicionActual.first, posicionActual.second -1 ));
         recorrida(posicionActual.first, posicionActual.second ) = 1;
         
     }
@@ -191,7 +191,7 @@ bool Laberinto::derecha(){
     posible = (posicionActual.second +1 >= this->getLado() ) ? false : getPosicion(posicionActual.first, posicionActual.second + 1 )&& recorrida(posicionActual.first, posicionActual.second + 1) != 1;
 
     if(posible){
-        setPosicionActualTo(posicionActual.first, posicionActual.second +1);
+        setPosicionActualTo( make_pair(posicionActual.first, posicionActual.second +1));
         recorrida(posicionActual.first, posicionActual.second ) = 1;
         
     }
