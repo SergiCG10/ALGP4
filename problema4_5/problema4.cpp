@@ -15,7 +15,7 @@ using namespace std;
  * @param solucion. Vector con una solucion del laberinto
  * @param imprimirProceso. Variable que indica si se quiere imprimir el proceso de obtención del resultado, por defecto en false
  */
-void resolverLaberinto(Laberinto& laberinto,vector<pair<int,int> >& solucion, bool imprimirProceso){
+void resolverLaberinto(Laberinto& laberinto,vector<pair<int,int> >& solucion, bool imprimirProceso = false){
     
     solucion.push_back(laberinto.getPosicionActual());
 
