@@ -2,7 +2,7 @@ CXX = g++
 BIN_DIR = ./bin
 FLAGS = -std=c++17
 
-PROBLEMAS = problema1 problema2 problema4 problema5 generarLaberintos
+PROBLEMAS = problema1 problema2 problema2BnB problema4 problema5 generarLaberintos
 
 all: $(PROBLEMAS)
 
@@ -19,6 +19,10 @@ problema2: $(BIN_DIR)/problema2.bin
 $(BIN_DIR)/problema2.bin: problema2/problema2.cpp
 	$(CXX) $(FLAGS) -o $@ $^
 
+problema2BnB: $(BIN_DIR)/problema2BnB.bin
+
+$(BIN_DIR)/problema2BnB.bin: problema2/problema2BnB.cpp
+	$(CXX) $(FLAGS) -o $@ $^
 
 #Regla de construcción para problema3
 problema3: $(BIN_DIR)/problema3.bin
@@ -57,12 +61,12 @@ $(BIN_DIR)/problema5.bin: problema4_5/problema5.cpp $(BIN_DIR)/Laberinto.o
 #Ejemplos de ejecución 
 	@echo
 	@echo Para el problema2, pruebe a ejecutar: ./bin/problema2.bin 12345 4 
-	@echo Para el problema2, pruebe a ejecutar: ./bin/problema2.bin 12345 6
+	@echo Para el problema2BnB, pruebe a ejecutar: ./bin/problema2.bin 12345 6
 	@echo
 ejemplos:
 	@echo
-	@echo Para el problema2, pruebe a ejecutar: ./bin/problema2.bin 12345 4 
-	@echo Para el problema2, pruebe a ejecutar: ./bin/problema2.bin 12345 6
+	@echo Para el problema2, pruebe a ejecutar: ./bin/problema2BnB.bin 12345 15 
+	@echo Para el problema2, pruebe a ejecutar: ./bin/problema2BnB.bin 12345 30
 	@echo
 # Regla para limpiar
 clean:
