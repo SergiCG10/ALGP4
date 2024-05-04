@@ -27,7 +27,7 @@ $(BIN_DIR)/problema2BnB.bin: problema2/problema2BnB.cpp
 #Regla de construcción para problema3
 problema3: $(BIN_DIR)/problema3.bin
 
-$(BIN_DIR)/problema3.bin: problema3/problema3.cpp
+$(BIN_DIR)/problema3.bin: senku.cpp/PasoAPaso.cpp
 	$(CXX) $(FLAGS) -o $@ $^
 
 
