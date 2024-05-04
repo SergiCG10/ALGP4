@@ -37,15 +37,21 @@ Laberinto::Laberinto(){
     posicionActual = make_pair(0,0);
 }
 
-Laberinto::Laberinto(int l){
+Laberinto::Laberinto(int l, pair<int,int> ini /**= make_pair(0,0)*/, pair<int,int> fin /**= make_pair(-1, -1)*/){
     if( l < 0){
         throw out_of_range("El numero de filas o de columnas es erróneo");
     }
 
     inicializar(l);
     lado = l;
-    posicionActual = make_pair(0,0);
-
+    inicio = ini;
+    posicionActual = ini;
+    if( fin.first == -1 && fin.second == -1){
+        salida = make_pair(l-1,l-1);
+    }else{
+        salida = fin;
+    }
+    
     for(int i =0; i < l; i++){
         for(int j =0; j < l; j++){
             laberinto[i][j] = true;
@@ -74,6 +80,29 @@ void Laberinto::setPosicionActualTo(pair<int,int> p){
     }
     recorridos[p.first][p.second] = 1;
     posicionActual = p;
+}
+
+const pair<int,int>& Laberinto::getPosicionInicial() const{
+    return inicio;
+}
+
+void Laberinto::setPosicionInicialTo(pair<int,int> p){
+    if(p.first < 0 || p.first >= this->getLado() || p.second < 0 || p.second >= this->getLado()){
+        throw out_of_range("setPosicionInicialTo::Valor de fila o de columna erróneo");
+    }
+    recorridos[p.first][p.second] = 1;
+    inicio = p;
+}
+
+const pair<int,int>& Laberinto::getPosicionFinal() const{
+    return salida;
+}
+
+void Laberinto::setPosicionFinalTo(pair<int,int> p){
+    if(p.first < 0 || p.first >= this->getLado() || p.second < 0 || p.second >= this->getLado()){
+        throw out_of_range("setPosicionInicialTo::Valor de fila o de columna erróneo");
+    }
+    salida = p;
 }
 
 const bool& Laberinto::getPosicion(int f, int c) const{
@@ -116,6 +145,8 @@ Laberinto::Laberinto(const Laberinto& lab){
             this->setPosicion(i,j, lab.getPosicion(i,j));
         }
     }
+    this->inicio = lab.inicio;
+    this->salida = lab.salida;
     posicionActual = lab.posicionActual;
 
     for(int i = 0; i < lado; i++){
@@ -128,6 +159,7 @@ Laberinto::Laberinto(const Laberinto& lab){
 Laberinto& Laberinto::operator = (const Laberinto& lab){
     liberar();
     this->lado = lab.getLado();
+    
     inicializar(lado);
     for(int i = 0; i < lado; i++){
         for(int j = 0; j <lado; j++){
@@ -135,6 +167,8 @@ Laberinto& Laberinto::operator = (const Laberinto& lab){
         }
     }
 
+    this->inicio = lab.inicio;
+    this->salida = lab.salida;
     posicionActual = lab.posicionActual;
 
     for(int i = 0; i < lado; i++){
@@ -199,8 +233,12 @@ bool Laberinto::derecha(){
     return posible;
 }
 
-bool Laberinto::salida(){
-    return ( posicionActual.first == this->getLado() -1 ) && ( posicionActual.second == this->getLado()-1 );
+bool Laberinto::esSalida(){
+    return ( posicionActual.first == salida.first  ) && ( posicionActual.second == salida.second );
+}
+
+bool Laberinto::esSalidaPos( pair<int,int> p ){
+    return ( p.first == salida.first ) && ( p.second == salida.second );
 }
 
 void Laberinto::loadLaberinto(string fichero){
@@ -208,10 +246,15 @@ void Laberinto::loadLaberinto(string fichero){
     liberar();
     ifstream f(fichero);
     int lado = 0;
+    int posInicialF = 0, posInicialC = 0;
+    int posFinalF = 0, posFinalC = 0;
     
     
     if(f){
         f >> lado;
+        f >>  posInicialF >> posInicialC;
+        f >> posFinalF >> posFinalC;
+
     }else{
         cerr<< "Error al abrir el fichero de entrada"<<endl;
         
@@ -223,8 +266,10 @@ void Laberinto::loadLaberinto(string fichero){
     
     inicializar(lado);
     this->lado = lado;
-    posicionActual = make_pair(0,0);
-    recorrida(0,0) = 1;
+    inicio = make_pair(posInicialF,posInicialC);
+    posicionActual = inicio;
+    salida = make_pair(posFinalF, posFinalC);
+    recorrida( posInicialF, posInicialC) = 1;
     bool aux;
     for(int i =0 ; i< lado; i++){
         for(int j = 0; j < lado; j++){
@@ -242,6 +287,8 @@ void Laberinto::saveLaberinto(string fichero){
     if(f){
         f << this->getLado();
         f <<endl;
+        f << inicio.first << " " << inicio.second <<endl;
+        f << salida.first << " " << salida.second <<endl;
         for(int i = 0; i < this->getLado(); i++){
             for(int j = 0; j < this->getLado(); j++){
                 f << getPosicion(i,j) << " ";

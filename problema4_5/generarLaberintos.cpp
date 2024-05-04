@@ -14,6 +14,7 @@ int main( int argc, char* argv[] ){
     bool nombreGuardado = false;
     string nombreFichero;
     char respuesta = 'n';
+    int posX, posY;
 
     if( argc != 2 && argc != 1){
         cerr<<"Error. Parámetros incorrectos."<<endl;
@@ -23,17 +24,19 @@ int main( int argc, char* argv[] ){
     if(argc == 2){
         directorioGuardado = argv[1];
     }else{
-        directorioGuardado = "problema4_5/laberintos";
+        directorioGuardado = "bin/laberintos";
     }
     
     do{
         cout<<"Que desea hacer?"<<endl;
         cout<<"\t1: crear un laberinto"<<endl;
-        cout<<"\t2: editar el laberinto almacenado"<<endl;    
-        cout<<"\t3: guardar el laberinto almacenado"<<endl;
-        cout<<"\t4: cargar un laberinto almacenado"<<endl;
-        cout<<"\t5: imprimir el laberinto almacenado"<<endl;
-        cout<<"\t6: cambiar el directorio donde guardar"<<endl;
+        cout<<"\t2: editar el laberinto almacenado"<<endl;
+        cout<<"\t3: editar la posición de inicio"<<endl;
+        cout<<"\t4: editar la posición de salida"<<endl;
+        cout<<"\t5: guardar el laberinto almacenado"<<endl;
+        cout<<"\t6: cargar un laberinto almacenado"<<endl;
+        cout<<"\t7: imprimir el laberinto almacenado"<<endl;
+        cout<<"\t8: cambiar el directorio donde guardar"<<endl;
         cout<<"\totro: terminar"<<endl;
         cin>>opcion;
         switch (opcion){
@@ -73,6 +76,7 @@ int main( int argc, char* argv[] ){
                 }while(i != -1);
                 break;
             case 2:
+
                 int f,c;
                 bool valor;
                 if(almacenado){
@@ -105,26 +109,51 @@ int main( int argc, char* argv[] ){
                 
                 break;
             case 3:
+
+                if(almacenado){
+                    cout<<"La posición actual de inicio es "<<l.getPosicionInicial().first<<" "<<l.getPosicionInicial().second<<endl;
+                    cout<<"¿Que nueva posición de inicio desea establecer?\t ";
+                    cin>>posX>>posY;
+                    l.setPosicionInicialTo( make_pair(posX, posY));
+                }else{
+                    cout<<"No hay ningún laberinto almacenado"<<endl;
+                }
+
+                break;
+            case 4:
+
+                if(almacenado){
+                    cout<<"La posición actual de salida es "<<l.getPosicionFinal().first<<" "<<l.getPosicionFinal().second<<endl;
+                    cout<<"¿Que nueva posición de salida desea establecer?\t ";
+                    cin>>posX>>posY;
+                    l.setPosicionFinalTo( make_pair(posX, posY));
+                }else{
+                    cout<<"No hay ningún laberinto almacenado"<<endl;
+                }
+                break;
+            case 5:
                 aux = directorioGuardado;
-                if(nombreGuardado){
+                if(nombreGuardado && almacenado){
                     cout<<"¿Desea guardar el laberinto con otro nombre? s/n \t";
                     cin>>respuesta;
 
                 }
 
-                if(!nombreGuardado || respuesta == 's'){
+                if( (!nombreGuardado || respuesta == 's' ) && almacenado){
                     respuesta = 'n';
                     cout<<"¿Como desea que se llame el fichero donde va a guardar el laberinto? \t";
                     cin>>nombre;
                     aux += "/" + nombre;
                     nombreFichero = aux;
                     nombreGuardado = true;
+                }else{
+                    cout<<"No hay ningún laberinto guardado"<<endl;
                 }
-                
-                l.saveLaberinto( nombreFichero );
+                if(almacenado)
+                    l.saveLaberinto( nombreFichero );
 
                 break;
-            case 4:
+            case 6:
                 aux = directorioGuardado;
                 cout<<"¿Como se llama el fichero de donde va a copiar el laberinto? \t";
                 cin>>nombre;
@@ -134,15 +163,15 @@ int main( int argc, char* argv[] ){
                 l.loadLaberinto( nombreFichero );
                 almacenado = true;
                 break;
-            case 5:
+            case 7:
                 l.imprimirLaberinto();
                 break;
-            case 6:
+            case 8:
                 cout<<"Introduzca la nueva carpeta donde guardar: \t";
                 cin>>directorioGuardado;
                 break;
             default :
                 opcion = -1;
         }
-    }while(opcion >0 && opcion <7);
+    }while(opcion >0 && opcion <9);
 }

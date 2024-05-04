@@ -15,39 +15,46 @@ using namespace std;
  * @param solucion. Vector con una solucion del laberinto
  * @param imprimirProceso. Variable que indica si se quiere imprimir el proceso de obtención del resultado, por defecto en false
  */
-void resolverLaberinto(Laberinto& laberinto,vector<pair<int,int> >& solucion, bool imprimirProceso = false){
+void resolverLaberinto(Laberinto& laberinto,vector<pair<int,int> >& solucion, vector<pair<int,int>>&recorrido , int& distanciaMin, int& distanciaActual, bool imprimirProceso = false){
     
-    solucion.push_back(laberinto.getPosicionActual());
-
+    recorrido.push_back(laberinto.getPosicionActual());
+    
     if(imprimirProceso){
         laberinto.imprimirLaberintoRecorrido();
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         system("clear");
     }
     
-    if(!laberinto.esSalida() && laberinto.abajo()){
-        resolverLaberinto(laberinto, solucion, imprimirProceso);
-    }
-        
-    if(!laberinto.esSalida() && laberinto.derecha()){
-        resolverLaberinto(laberinto, solucion, imprimirProceso);
-    }
-    
-    if(!laberinto.esSalida() && laberinto.izquierda()){
-        resolverLaberinto(laberinto, solucion, imprimirProceso); 
-    }
-    if(!laberinto.esSalida() && laberinto.arriba()){
-        resolverLaberinto(laberinto, solucion, imprimirProceso);
+    if(laberinto.esSalida() && distanciaActual < distanciaMin){
+        solucion = recorrido;
+        distanciaMin = distanciaActual ;
     }
 
-    if( !laberinto.esSalida()){
-        solucion.pop_back();
-        if(solucion.size() > 0){
-            laberinto.setPosicionActualTo( solucion.back() );
-        }else{
-            cerr<<"No hay solución"<<endl;
-        }
-    } 
+    if(distanciaActual < distanciaMin && laberinto.abajo()){
+        distanciaActual++;
+        resolverLaberinto(laberinto, solucion, recorrido, distanciaMin, distanciaActual, imprimirProceso);
+    }
+        
+    if(distanciaActual < distanciaMin && laberinto.derecha()){
+        distanciaActual++;
+        resolverLaberinto(laberinto, solucion, recorrido, distanciaMin, distanciaActual, imprimirProceso);
+    }
+    
+    if(distanciaActual < distanciaMin && laberinto.izquierda()){
+        distanciaActual++;
+        resolverLaberinto(laberinto, solucion, recorrido, distanciaMin, distanciaActual, imprimirProceso);
+    }
+    if(distanciaActual < distanciaMin && laberinto.arriba()){
+        distanciaActual++;
+        resolverLaberinto(laberinto, solucion, recorrido, distanciaMin, distanciaActual, imprimirProceso);
+    }
+
+    distanciaActual--;
+    laberinto.recorrida( recorrido.back().first , recorrido.back().second ) =  0;
+    recorrido.pop_back();
+    if(recorrido.size() > 0){
+        laberinto.setPosicionActualTo( recorrido.back() );
+    }
 }
 
 int main(int argc, char * argv[] ){
@@ -60,9 +67,7 @@ int main(int argc, char * argv[] ){
             string aux = argv[2];
             mostrarProceso = (aux == "s" ? true : false) ;
         }
-        
-        vector<pair<int,int>> solucion;
-        
+               
         Laberinto lab;
         archivo = argv[1];
         lab.loadLaberinto( archivo );
@@ -74,24 +79,25 @@ int main(int argc, char * argv[] ){
         system("clear");
 
         Laberinto sol = lab;
+        vector<pair<int,int>> solucion, recorrido;
+        int distanciaMin = lab.getLado() * lab.getLado() , distanciaActual=0;
 
         if(lab.getLado() > 1){
-            resolverLaberinto(lab, solucion, mostrarProceso);
+            resolverLaberinto(lab, solucion, recorrido, distanciaMin, distanciaActual , mostrarProceso);
 
-            if( lab.esSalidaPos( solucion.back() ) ){
+            if( solucion.size() > 0 && lab.esSalidaPos( solucion.back() ) ){
                 for(int i = 0; i < solucion.size(); i++){
-                    cout<<"Una solución al laberinto es:"<<endl;
+                    cout<<"La solución óptima para el laberinto es:"<<endl;
                     sol.setPosicionActualTo(solucion[i]);
                     sol.imprimirLaberintoRecorrido();
                     std::this_thread::sleep_for(std::chrono::milliseconds(100));
                     system("clear");
                 }
 
-                cout<<"Una solución al laberinto es:"<<endl;
+                cout<<"La solución óptima para el laberinto es:"<<endl;
                 sol.imprimirLaberintoRecorrido();
                 cout<<endl;
             }
-            
         }
         
 

@@ -21,6 +21,9 @@ class Laberinto{
         int lado;
         pair<int,int> posicionActual;
 
+        pair<int,int> inicio;
+        pair<int,int> salida;
+
         /**
          * @brief Funcion privada inicializar. Inicializa el laberinto con f filas y columnas
          *
@@ -46,7 +49,7 @@ class Laberinto{
          * @param l. Lado de la matriz cuadrada
          *
          */
-        Laberinto(int l);
+        Laberinto(int l, pair<int,int> ini = make_pair(0,0), pair<int,int> fin = make_pair(-1, -1));
 
         /**
          * @brief Funcion getLado. Devuelve el tamaño del lado de la matriz cuadrada
@@ -54,17 +57,43 @@ class Laberinto{
         int getLado() const;
 
         /**
-         * @brief Funcion posicion. Devuelve la posicion actual. Función getter
+         * @brief Funcion getPosicionActual. Devuelve la posicion actual. Función getter
          */
         const pair<int,int>& getPosicionActual() const;
 
         /**
-         * @brief Funcion posicion. Establece la posicion actual. Función setter
+         * @brief Funcion setPosicionActualTo. Establece la posicion actual. Función setter
          *
          * @param f Filas de la posición
          * @param c Columnas de la posición
          */
         void setPosicionActualTo(pair<int,int> p);
+
+        /**
+         * @brief Funcion getPosicionInicial. Devuelve la posicion inicial. Función getter
+         */
+        const pair<int,int>& getPosicionInicial() const;
+
+        /**
+         * @brief Funcion setPosicionInicialTo. Establece la posicion inicial. Función setter
+         *
+         * @param f Filas de la posición
+         * @param c Columnas de la posición
+         */
+        void setPosicionInicialTo(pair<int,int> p);
+
+        /**
+         * @brief Funcion getPosicionFinal. Devuelve la posicion final. Función getter
+         */
+        const pair<int,int>& getPosicionFinal() const;
+
+        /**
+         * @brief Funcion setPosicionFinalTo. Establece la posicion final. Función setter
+         *
+         * @param f Filas de la posición
+         * @param c Columnas de la posición
+         */
+        void setPosicionFinalTo(pair<int,int> p);
 
         /**
          * @brief Funcion posicion. Devuelve el valor de una casilla (f,c). Función getter
@@ -138,7 +167,14 @@ class Laberinto{
         /**
          * @brief Funcion salida. Determina si estás en la salida o no a partir de la posicion actual
          */
-        bool salida();
+        bool esSalida();
+
+        /**
+         * @brief Funcion salida. Determina si estás en la salida o no a partir de la posicion p
+         *
+         * @param p Posiciona comprobar si es salida
+         */
+        bool esSalidaPos( pair<int,int> p);
 
         /**
          *
