@@ -21,7 +21,7 @@ void resolverLaberinto(Laberinto& laberinto,vector<pair<int,int> >& solucion, ve
     
     if(imprimirProceso){
         laberinto.imprimirLaberintoRecorrido();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        std::this_thread::sleep_for(std::chrono::milliseconds(150));
         system("clear");
     }
     
@@ -54,6 +54,8 @@ void resolverLaberinto(Laberinto& laberinto,vector<pair<int,int> >& solucion, ve
     recorrido.pop_back();
     if(recorrido.size() > 0){
         laberinto.setPosicionActualTo( recorrido.back() );
+    }else{
+        cout<<"No hay solución"<<endl;
     }
 }
 

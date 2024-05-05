@@ -21,7 +21,7 @@ void resolverLaberinto(Laberinto& laberinto,vector<pair<int,int> >& solucion, bo
 
     if(imprimirProceso){
         laberinto.imprimirLaberintoRecorrido();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        std::this_thread::sleep_for(std::chrono::milliseconds(150));
         system("clear");
     }
     
