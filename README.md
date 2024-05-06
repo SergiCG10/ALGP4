@@ -1,18 +1,14 @@
 # ALGP4
 A continuación mostramos el uso del **makile** y añadimos un breve resumen de los archivos que se encuentran dentro de cada una de las carpetas
 
-
-> [!NOTE] 
-> Hola
-
 ## makefile
-### make
+### comando _"make"_
 El comando _"make"_ crea todos los ejecutables. Se debe de ejecutar en la carpeta ALGP4, al mismo nivel que la carpeta bin y las carpetas de cada problema.
 
-### make ejemplos
+### comando _"make ejemplos"_
 El comando _"make ejemplos"_ muestra los ejemplos de ejecución para cada ejecutable dentro de la carpeta bin
 
-### make clean
+### comando _"make clean"_
 El comando _"make clean"_ sirve para borrar todos los ejecutables y archivos.o dentro de la carpeta bin
 
 ## bin
