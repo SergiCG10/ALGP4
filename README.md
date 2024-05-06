@@ -1,4 +1,4 @@
-# `#0969DA` ALGP4
+# '#0969DA' ALGP4
 A continuación mostramos el uso del **makile** y añadimos un breve resumen de los archivos que se encuentran dentro de cada una de las carpetas
 
 ## makefile
@@ -43,11 +43,16 @@ Este archivo contiene el código para el problema 3. Con el ejecutable resultant
 ## problema4_5
 En esta carpeta se encuentran la solución al problema 4 y al 5, para los que se utilizan los archivos Laberinto.h y Laberinto.cpp, que almacenan el código de la clase Laberinto utilizada para la resolución de los ejercicios.
 
+>_Nota: El ejecutable del problema 4 en general es el más rápido para todos los casos, sobre todo cuando no hay solución._
+
 ### generarLaberintos.cpp
 Este archivo se trata de un archivo auxiliar para crear los laberintos que sirven de ejemplo para tanto el problema 4 como para el problema 5.
 
 ### problema4.cpp
 Este archivo contiene la solución al problema 4, resuelto mediante backtracking, haciendo una exploración en profundidad y dando como solución el primer camino que se encuentre que resuelva el laberinto.
 
+>_Nota: El camino resultante no tiene por qué ser el más corto._
+
 ### problema5.cpp
 Este archivo contiene la solución al problema 5, resueltro mediante branch and bound. Cuando encontramos una solución no nos detenemos, y continuaremos buscando una solución mejor explorando todos los nodos mientras que la distancia mínima obtenida hasta la solución, sea mayor que la distancia recorrida por las ramificaciones que estamos recorriendo, obteniendo tras la exploración el camino más corto.
+
