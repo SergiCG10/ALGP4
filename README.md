@@ -2,7 +2,8 @@
 A continuación mostramos el uso del **makile** y añadimos un breve resumen de los archivos que se encuentran dentro de cada una de las carpetas
 
 
-> [NOTE!] Hola
+> [NOTE!] 
+> Hola
 
 ## makefile
 ### make
