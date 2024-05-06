@@ -1,34 +1,37 @@
-# ALGP4
-A continuación mostramos el uso del makile y añadimos un breve resumen de los archivos que se encuentran dentro de cada una de las carpetas
+# `#0969DA` ALGP4
+A continuación mostramos el uso del **makile** y añadimos un breve resumen de los archivos que se encuentran dentro de cada una de las carpetas
 
 ## makefile
 ### make
-Este comando crea todos los ejecutables. Se debe de ejecutar en la carpeta ALGP4, al mismo nivel que la carpeta bin y las carpetas de cada problema.
+El comando _"make"_ crea todos los ejecutables. Se debe de ejecutar en la carpeta ALGP4, al mismo nivel que la carpeta bin y las carpetas de cada problema.
 
 ### make ejemplos
-Utilice este comando si desea de ver los ejemplos de ejecución para cada ejecutable dentro de la carpeta bin
+El comando _"make ejemplos"_ muestra los ejemplos de ejecución para cada ejecutable dentro de la carpeta bin
 
 ### make clean
-Utilice este comando para borrar todos los ejecutables y archivos.o dentro de la carpeta bin
+El comando _"make clean"_ sirve para borrar todos los ejecutables y archivos.o dentro de la carpeta bin
 
 ## bin
 En esta carpeta se guardan los ejecutables, y los archivos.o tras hacer make
 ### laberintos
-Dentro de esta carpeta se encuentran todos los laberintos que hemos creado de ejemplo para la ejecución de los problemas 4 y 5.
+Dentro de esta carpeta se encuentran todos los laberintos que hemos creado de **ejemplo** para la ejecución de los problemas 4 y 5.
 
 ## problema1
 ### problema1.cpp
-Este archivo código del problema 1.
-Nota: La satisfacción entre comensales se establece de forma psudoaleatoria a través de una semilla.
+Este archivo código del **problema 1**.
+
+>_Nota: La satisfacción entre comensales se establece de forma pseudoaleatoria a través de una semilla._
 
 ## problema2
 ### problema2.cpp
-Este archivo contiene el código del problema 2 solucionado mediante backtracking.
-Nota: La satisfacción entre comensales se establece de forma pseudoaleatoria a través de una semilla.
+Este archivo contiene el código del **problema 2** solucionado mediante backtracking.
+
+>_Nota: La satisfacción entre comensales se establece de forma pseudoaleatoria a través de una semilla._
 
 ### problema2BnB.cpp
-Este archivo contiene el código del problema 2 solucionado con branch and bound
-Nota: La satisfacción entre comensales se establece de forma pseudoaleatoria a través de una semilla.
+Este archivo contiene el código del **problema 2** solucionado con _branch and bound_. 
+
+>_Nota: La satisfacción entre comensales se establece de forma pseudoaleatoria a través de una semilla._
 
 ## problema3
 ### senku.cpp
