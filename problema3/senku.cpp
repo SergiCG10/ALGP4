@@ -370,6 +370,7 @@ void inicializarTablero(int elec) {
 
         case 1:
             juego(matriz);
+            break;
 
         case 2:
             for (int i = 0; i < FILAS; i++) 
@@ -377,6 +378,7 @@ void inicializarTablero(int elec) {
                     copia[i][j] = matriz[i][j];
             solve(matriz);
             printSolucion(copia);
+            break;
     }
 } 
 

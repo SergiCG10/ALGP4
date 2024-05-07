@@ -272,10 +272,15 @@ void inicializarTablero(int elec) {
         case 1:
             mostrarMatriz(matriz);
             inicio();
+            break;
 
         case 2:
             solve(matriz);
             inicio();
+            break;
+
+        default:
+            break;
     }
 } 
 
