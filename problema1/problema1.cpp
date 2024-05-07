@@ -1,5 +1,4 @@
 #include <iostream>
-#include <stdlib.h>
 #include <vector>
 using namespace std;
 
@@ -19,7 +18,6 @@ vector<pair<int,int>> & Candidato, vector<bool> & libres, int & maxpref)
     
     if(parejas.size()==Candidato.size()){
         int sumacandidato=SumarPreferencias(parejas,preferencias);
-        //cout<<sumacandidato<<endl;
         if(sumacandidato>maxpref){
             maxpref=sumacandidato;
             Candidato=parejas;
@@ -41,7 +39,6 @@ vector<pair<int,int>> & Candidato, vector<bool> & libres, int & maxpref)
                 if(libres[candidato]){
                     pair<int,int> aux(i,candidato);
                     parejas.push_back(aux);
-                    //cout<<"Pareja "<<i<<": "<<parejas[i].first<<" "<<parejas[i].second<<endl;
                     libres[i]=false;
                     libres[candidato]=false;
                 }
@@ -128,6 +125,8 @@ int main(int argc, char * argv[])
         for(int j=0;j<num_estudiantes;j++)
             preferencias[i][j]=matriz[i][j]*matriz[j][i];
     }
+    cout<<"Matriz de estudiantes"<<endl;
+    ImprimeMatriz(matriz,num_estudiantes);
     cout<<"Matriz de preferencias (i,j)*(j,i):\n"<<endl;
     ImprimeMatriz(preferencias,num_estudiantes);                                                                                                
     
