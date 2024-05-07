@@ -82,4 +82,4 @@ Ejecución:
 
 Ejemplo:
 
-    ./problema5.bin laberintos/ejemplo2 s
+    ./problema5.bin laberintos/ejemplo3 s
