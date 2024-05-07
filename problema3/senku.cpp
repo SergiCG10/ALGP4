@@ -19,7 +19,6 @@ struct Movimiento {
 
 //DECLARACION FUNCIONES para el juego
 void inicio() ;
-int contadorVueltas = 0;
 const int FILAS = 16; 
 const int COLUMNAS = 39; 
 std::unordered_map<std::string, bool> memo;
@@ -151,7 +150,6 @@ std::string serializeBoard(char matriz[][39]) {
 //Resolver con backtracking el juego
 bool solve(char matriz [][39])
 {
-    contadorVueltas++;
 
     std::string state = serializeBoard(matriz);
     if (memo.find(state) != memo.end()) {
@@ -162,6 +160,7 @@ bool solve(char matriz [][39])
         
             if (matriz[i][j] == '0'){
                 
+                //mueve, si puede, la ficha hacia abajo
                 if(validacioningreso(matriz, i, j, i+4, j)){
 
                     mover(matriz, i, j, i+4, j);
@@ -179,6 +178,7 @@ bool solve(char matriz [][39])
                 
                 }
 
+                //mueve, si puede, la ficha hacia la derecha
                 if(validacioningreso(matriz, i, j, i, j+12)){
 
                     mover(matriz, i, j, i, j+12);
@@ -195,6 +195,7 @@ bool solve(char matriz [][39])
                     }                
                 }
 
+                //mueve, si puede, la ficha hacia arriba
                 if(validacioningreso(matriz, i, j, i-4, j)){
 
                     mover(matriz, i, j, i-4, j);
@@ -211,6 +212,7 @@ bool solve(char matriz [][39])
                     }
                 }
 
+                //mueve, si puede, la ficha hacia la izquierda
                 if(validacioningreso(matriz, i, j, i, j-12)){
 
                     mover(matriz, i, j, i, j-12);
@@ -226,7 +228,8 @@ bool solve(char matriz [][39])
                         movimientos.pop_back();  // Elimina el último movimiento porque no condujo a una solución
                     }
                 }
-
+                
+                //comprueba si el tablero está en estado ganador
                 if(validarganador(matriz)){
                     cout << "\n\nResuelto: \n\n";
                     mostrarMatriz(matriz);
