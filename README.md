@@ -13,31 +13,31 @@ El comando _"make clean"_ sirve para borrar todos los ejecutables y archivos.o d
 
 ## :file_folder: bin
 En esta carpeta se guardan los ejecutables, y los archivos.o tras hacer make
-### laberintos
+### :file_folder: laberintos
 Dentro de esta carpeta se encuentran todos los laberintos que hemos creado de **ejemplo** para la ejecución de los problemas 4 y 5.
 
 ## :file_folder: problema1
-### problema1.cpp
+### :page_facing_up: problema1.cpp
 Este archivo código del **problema 1**.
 
 >_Nota: La satisfacción entre comensales se establece de forma pseudoaleatoria a través de una semilla._
 
 ## :file_folder: problema2
-### problema2.cpp
+### :page_facing_up: problema2.cpp
 Este archivo contiene el código del **problema 2** solucionado mediante backtracking.
 
 >_Nota: La satisfacción entre comensales se establece de forma pseudoaleatoria a través de una semilla._
 
-### problema2BnB.cpp
+### :page_facing_up: problema2BnB.cpp
 Este archivo contiene el código del **problema 2** solucionado con _branch and bound_. 
 
 >_Nota: La satisfacción entre comensales se establece de forma pseudoaleatoria a través de una semilla._
 
 ## :file_folder: problema3
-### senku.cpp
+### :page_facing_up: senku.cpp
 Este archivo contiene el código para el problema 3. Con el ejecutable resultante se puede jugar al senku y resolver también el problema paso a paso.
 
-### PasoAPaso.cpp
+### :page_facing_up: PasoAPaso.cpp
 Este archivo contiene el código para el problema 3. Con el ejecutable resultante podemos ver la posición de un tablero de forma intermedia y su resolución posterior.
 
 ## :file_folder: problema4_5
@@ -45,14 +45,14 @@ En esta carpeta se encuentran la solución al problema 4 y al 5, para los que se
 
 >_Nota: El ejecutable del problema 4 en general es el más rápido para todos los casos, sobre todo cuando no hay solución._
 
-### generarLaberintos.cpp
+### :page_facing_up: generarLaberintos.cpp
 Este archivo se trata de un archivo auxiliar para crear los laberintos que sirven de ejemplo para tanto el problema 4 como para el problema 5.
 
-### problema4.cpp
+### :page_facing_up: problema4.cpp
 Este archivo contiene la solución al problema 4, resuelto mediante backtracking, haciendo una exploración en profundidad y dando como solución el primer camino que se encuentre que resuelva el laberinto.
 
 >_Nota: El camino resultante no tiene por qué ser el más corto._
 
-### problema5.cpp
+### :page_facing_up: problema5.cpp
 Este archivo contiene la solución al problema 5, resueltro mediante branch and bound. Cuando encontramos una solución no nos detenemos, y continuaremos buscando una solución mejor explorando todos los nodos mientras que la distancia mínima obtenida hasta la solución, sea mayor que la distancia recorrida por las ramificaciones que estamos recorriendo, obteniendo tras la exploración el camino más corto.
 
