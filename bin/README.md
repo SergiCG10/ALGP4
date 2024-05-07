@@ -1,6 +1,6 @@
 # bin
 >_Nota: Para ver todos los siguientes ejecutables, deberá de hacer make antes en la carpeta superior_.
-### laberintos
+## :file_folder: laberintos
 Dentro de esta carpeta se encuentran todos los laberintos que hemos creado de **ejemplo** para la ejecución de los problemas 4 y 5.
 
 ## :gear: problema1.bin
