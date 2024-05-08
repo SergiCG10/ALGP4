@@ -197,7 +197,7 @@ void SentarComensales(const vector<vector<int>>& preferencias, vector<int>& mesa
             CotaInferior.second = preftemporal;
           }
           else if(ynodo.indexUltimo < n-1 && (CotaSuperior = CS(preferencias, ynodo)).second
-              >= CotaInferior.second){
+              > CotaInferior.second){
             nodos.push(ynodo);
             Ctemporal = CI(preferencias, ynodo);
             if(Ctemporal.second > CotaInferior.second)
