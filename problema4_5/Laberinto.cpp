@@ -312,7 +312,12 @@ void Laberinto::imprimirLaberinto(){
                 cout<<"  ";
             }
             for(int j = 0; j < lado; j++){
-                if( this->getPosicion(i,j) == true ){
+                if( i == getPosicionInicial().first && j == getPosicionInicial().second ){
+                    cout<<" ●";
+                }else if( i == getPosicionFinal().first && j == getPosicionFinal().second ){
+                    
+                    cout<<" ○";
+                }else if( this->getPosicion(i,j) == true ){
                     cout<<"  ";
                 }else{
                     cout<<" ■";
@@ -326,6 +331,9 @@ void Laberinto::imprimirLaberinto(){
         for(int i = 0; i < lado +2; i++){
             cout<<" ■";
         }
+        cout<<endl<<endl;
+        cout<<"Entrada: ●"<<endl;
+        cout<<"Salida: ○"<<endl;
         cout<<endl<<endl;
     }else{
         cout<<"El tamaño del laberinto es demasiado pequeño, o es 0"<<endl;
@@ -347,7 +355,12 @@ void Laberinto::imprimirLaberintoRecorrido(){
                 cout<<"  ";
             }
             for(int j = 0; j < lado; j++){
-                if( this->recorrida(i,j) == 0 ){
+                if( i == getPosicionInicial().first && j == getPosicionInicial().second ){
+                    cout<<" ●";
+                }else if( i == getPosicionFinal().first && j == getPosicionFinal().second ){
+                    
+                    cout<<" ○";
+                }else if( this->recorrida(i,j) == 0 ){
                     cout<<"  ";
                 }else if( this->recorrida(i,j) == -1){
                     cout<<" ■";
@@ -365,6 +378,9 @@ void Laberinto::imprimirLaberintoRecorrido(){
         for(int i = 0; i < lado +2; i++){
             cout<<" ■";
         }
+        cout<<endl<<endl;
+        cout<<"Entrada: ●"<<endl;
+        cout<<"Salida: ○"<<endl;
         cout<<endl<<endl;
     }else{
         cout<<"El tamaño del laberinto es demasiado pequeño, o es 0"<<endl;

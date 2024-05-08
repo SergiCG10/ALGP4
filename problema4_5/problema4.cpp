@@ -8,6 +8,7 @@
 
 using namespace std;
 
+static const int tiempo = 100; 
 /**
  * @brief Función resolverLaberinto. Resuelve el laberinto pasado por parámetro
  *
@@ -21,7 +22,7 @@ void resolverLaberinto(Laberinto& laberinto,vector<pair<int,int> >& solucion, bo
 
     if(imprimirProceso){
         laberinto.imprimirLaberintoRecorrido();
-        std::this_thread::sleep_for(std::chrono::milliseconds(150));
+        std::this_thread::sleep_for(std::chrono::milliseconds(tiempo));
         system("clear");
     }
     
@@ -83,7 +84,7 @@ int main(int argc, char * argv[] ){
                     cout<<"Una solución al laberinto es:"<<endl;
                     sol.setPosicionActualTo(solucion[i]);
                     sol.imprimirLaberintoRecorrido();
-                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(tiempo));
                     system("clear");
                 }
 

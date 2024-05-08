@@ -8,6 +8,7 @@
 
 using namespace std;
 
+const static int tiempo = 100;
 /**
  * @brief Función resolverLaberinto. Resuelve el laberinto pasado por parámetro
  *
@@ -21,7 +22,7 @@ void resolverLaberinto(Laberinto& laberinto,vector<pair<int,int> >& solucion, ve
     
     if(imprimirProceso){
         laberinto.imprimirLaberintoRecorrido();
-        std::this_thread::sleep_for(std::chrono::milliseconds(150));
+        std::this_thread::sleep_for(std::chrono::milliseconds(tiempo));
         system("clear");
     }
     
@@ -54,7 +55,7 @@ void resolverLaberinto(Laberinto& laberinto,vector<pair<int,int> >& solucion, ve
     recorrido.pop_back();
     if(recorrido.size() > 0){
         laberinto.setPosicionActualTo( recorrido.back() );
-    }else{
+    }else if( distanciaMin == laberinto.getLado() * laberinto.getLado() +1){
         cout<<"No hay solución"<<endl;
     }
 }
@@ -82,7 +83,7 @@ int main(int argc, char * argv[] ){
 
         Laberinto sol = lab;
         vector<pair<int,int>> solucion, recorrido;
-        int distanciaMin = lab.getLado() * lab.getLado() , distanciaActual=0;
+        int distanciaMin = lab.getLado() * lab.getLado() +1, distanciaActual=0;
 
         if(lab.getLado() > 1){
             resolverLaberinto(lab, solucion, recorrido, distanciaMin, distanciaActual , mostrarProceso);
@@ -92,7 +93,7 @@ int main(int argc, char * argv[] ){
                     cout<<"La solución óptima para el laberinto es:"<<endl;
                     sol.setPosicionActualTo(solucion[i]);
                     sol.imprimirLaberintoRecorrido();
-                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(tiempo));
                     system("clear");
                 }
 
