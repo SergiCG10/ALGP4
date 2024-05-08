@@ -5,12 +5,6 @@ using namespace std;
 
 #define NULL_NODE -1
 
-void PrintVector(const vector<int>& v);
-void PrintMatriz(const vector<vector<int>>& matriz);
-void SolucionProblema2(const vector<vector<int>>& preferencias, vector<int>& mesa);
-int SumaPreferencias(const vector<vector<int>>& preferencias, const vector<int>& comensales);
-void SentarComensales(const vector<vector<int>>& preferencias, vector<int>& mesa, int& maxpref);
-
 typedef struct Bolivariano{
   vector<bool> estanSentados;
   vector<int> mesaAsignada;
@@ -25,6 +19,11 @@ pair<vector<int>,int> CI(const vector<vector<int>>& vProblema,
     const nodo& ynodo);
 pair<vector<int>,int> CS(const vector<vector<int>>& vProblema,
     const nodo& ynodo);
+void PrintVector(const vector<int>& v);
+void PrintMatriz(const vector<vector<int>>& matriz);
+void SolucionProblema2(const vector<vector<int>>& preferencias, vector<int>& mesa);
+int SumaPreferencias(const vector<vector<int>>& preferencias, const vector<int>& comensales);
+void SentarComensales(const vector<vector<int>>& preferencias, vector<int>& mesa, int& maxpref);
 
 int main (int argc, char *argv[]) {
   vector<vector<int>> vProblema;
@@ -132,12 +131,39 @@ pair<vector<int>,int> CS(const vector<vector<int>>& vProblema,
   const int n = vProblema.size();
   pair<vector<int>,int> cota, temporal;
   nodo auxnodo;
+  int mejor=0;
   for(int i = 0; i < n; i++){
     if(!ynodo.estanSentados[i]){
       AddComensal(ynodo, auxnodo, i);
       temporal = CI(vProblema, auxnodo);
-      if(temporal.second > cota.second)
+      if(temporal.second > cota.second){
         cota = temporal;
+        mejor = i;
+      }
+    }
+  }
+  
+  nodo aux2nodo;
+  AddComensal(ynodo, auxnodo, mejor);
+  for(int i = 0; i < n; i++){
+    if(!auxnodo.estanSentados[i]){
+      AddComensal(auxnodo, aux2nodo, i);
+      temporal = CI(vProblema, aux2nodo);
+      if(temporal.second > cota.second){
+        mejor = i;
+        cota = temporal;
+      }
+    }
+  }
+  AddComensal(auxnodo, auxnodo, mejor);
+  for(int i = 0; i < n; i++){
+    if(!auxnodo.estanSentados[i]){
+      AddComensal(auxnodo, aux2nodo, i);
+      temporal = CI(vProblema, aux2nodo);
+      if(temporal.second > cota.second){
+        mejor = i;
+        cota = temporal;
+      }
     }
   }
   return cota;
@@ -200,15 +226,17 @@ void Inicializar(nodo& elnodo, const int& n, int valor){
 
 
 void AddComensal(const nodo& padre, nodo& hijo, int invitado){
-  if(&padre != &hijo){
-    hijo.estanSentados = padre.estanSentados;
-    hijo.estanSentados[invitado] = true;
-    hijo.mesaAsignada = padre.mesaAsignada;
-    hijo.indexUltimo = padre.indexUltimo+1;
-    hijo.mesaAsignada[hijo.indexUltimo]=invitado;
-  }else{
-    hijo.indexUltimo = hijo.indexUltimo+1;
-    hijo.mesaAsignada[hijo.indexUltimo] = invitado;
-    hijo.estanSentados[invitado] = true;
+  if(padre.indexUltimo != padre.mesaAsignada.size()-1){
+    if(&padre != &hijo){
+      hijo.estanSentados = padre.estanSentados;
+      hijo.estanSentados[invitado] = true;
+      hijo.mesaAsignada = padre.mesaAsignada;
+      hijo.indexUltimo = padre.indexUltimo+1;
+      hijo.mesaAsignada[hijo.indexUltimo]=invitado;
+    }else{
+      hijo.indexUltimo = hijo.indexUltimo+1;
+      hijo.mesaAsignada[hijo.indexUltimo] = invitado;
+      hijo.estanSentados[invitado] = true;
+    }
   }
 }
