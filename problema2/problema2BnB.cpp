@@ -5,6 +5,12 @@ using namespace std;
 
 #define NULL_NODE -1
 
+void PrintVector(const vector<int>& v);
+void PrintMatriz(const vector<vector<int>>& matriz);
+void SolucionProblema2(const vector<vector<int>>& preferencias, vector<int>& mesa);
+int SumaPreferencias(const vector<vector<int>>& preferencias, const vector<int>& comensales);
+void SentarComensales(const vector<vector<int>>& preferencias, vector<int>& mesa, int& maxpref);
+
 typedef struct Bolivariano{
   vector<bool> estanSentados;
   vector<int> mesaAsignada;
@@ -19,11 +25,6 @@ pair<vector<int>,int> CI(const vector<vector<int>>& vProblema,
     const nodo& ynodo);
 pair<vector<int>,int> CS(const vector<vector<int>>& vProblema,
     const nodo& ynodo);
-void PrintVector(const vector<int>& v);
-void PrintMatriz(const vector<vector<int>>& matriz);
-void SolucionProblema2(const vector<vector<int>>& preferencias, vector<int>& mesa);
-int SumaPreferencias(const vector<vector<int>>& preferencias, const vector<int>& comensales);
-void SentarComensales(const vector<vector<int>>& preferencias, vector<int>& mesa, int& maxpref);
 
 int main (int argc, char *argv[]) {
   vector<vector<int>> vProblema;
