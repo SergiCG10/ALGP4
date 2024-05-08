@@ -9,7 +9,6 @@ typedef struct Bolivariano{
   vector<bool> estanSentados;
   vector<int> mesaAsignada;
   int indexUltimo;
-  int valorInvitado;
 } nodo;
 
 void Inicializar(nodo&, const int&, int valor = NULL_NODE);
@@ -104,7 +103,7 @@ pair<vector<int>,int> CI(const vector<vector<int>>& vProblema,
   pair<vector<int>, int> resultado;
   resultado.first = ynodo.mesaAsignada;
   vector<bool> estansentados = ynodo.estanSentados;
-  int nasiento = ynodo.indexUltimo+1, inv1=0, inv2, maxconv, invelegido=ynodo.valorInvitado; //O(1)
+  int nasiento = ynodo.indexUltimo+1, inv1=0, inv2, maxconv, invelegido=ynodo.mesaAsignada[ynodo.indexUltimo]; //O(1)
   while(nasiento < n){ //O(n-1)*O(n-1) => O(n²)
 
     estansentados[invelegido] = true; //O(1) Hemos sentado el 0
@@ -191,7 +190,6 @@ void Inicializar(nodo& elnodo, const int& n, int valor){
   elnodo.estanSentados.resize(n, false);
   elnodo.mesaAsignada.resize(n, -1);
   elnodo.indexUltimo = -1;
-  elnodo.valorInvitado = valor;
   if(valor != NULL_NODE){
     elnodo.indexUltimo++;
     elnodo.mesaAsignada[0] = valor;
@@ -207,11 +205,9 @@ void AddComensal(const nodo& padre, nodo& hijo, int invitado){
     hijo.mesaAsignada = padre.mesaAsignada;
     hijo.indexUltimo = padre.indexUltimo+1;
     hijo.mesaAsignada[hijo.indexUltimo]=invitado;
-    hijo.valorInvitado = invitado;
   }else{
     hijo.indexUltimo = hijo.indexUltimo+1;
     hijo.mesaAsignada[hijo.indexUltimo] = invitado;
-    hijo.valorInvitado = invitado;
     hijo.estanSentados[invitado] = true;
   }
 }
