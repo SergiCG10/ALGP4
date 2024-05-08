@@ -19,7 +19,12 @@ const static int tiempo = 100;
 void resolverLaberinto(Laberinto& laberinto,vector<pair<int,int> >& solucion, vector<pair<int,int>>&recorrido , int& distanciaMin, int& distanciaActual, bool imprimirProceso = false){
     
     recorrido.push_back(laberinto.getPosicionActual());
-    
+    if(distanciaMin == laberinto.getLado() * laberinto.getLado() +1 ){
+        cout<<"Distancia mínima actual: - "<<endl;
+    }else{
+        cout<<"Distancia mínima actual: "<<distanciaMin<<endl;
+    }
+    cout<<"Distancia recorrida: "<<distanciaActual<<endl;
     if(imprimirProceso){
         laberinto.imprimirLaberintoRecorrido();
         std::this_thread::sleep_for(std::chrono::milliseconds(tiempo));
