@@ -74,7 +74,7 @@ int main(int argc, char * argv[] ){
         Laberinto lab;
         archivo = argv[1];
         lab.loadLaberinto( archivo );
-        
+        system("clear");
         cout<<"El laberinto propuesto es: "<<endl;
 
         lab.imprimirLaberinto();
