@@ -9,7 +9,6 @@ typedef struct Bolivariano{
   vector<bool> estanSentados;
   vector<int> mesaAsignada;
   int indexUltimo;
-  int valorInvitado;
 } nodo;
 
 void Inicializar(nodo&, const int&, int valor = NULL_NODE);
@@ -104,7 +103,7 @@ pair<vector<int>,int> CI(const vector<vector<int>>& vProblema,
   pair<vector<int>, int> resultado;
   resultado.first = ynodo.mesaAsignada;
   vector<bool> estansentados = ynodo.estanSentados;
-  int nasiento = ynodo.indexUltimo+1, inv1=0, inv2, maxconv, invelegido=ynodo.valorInvitado; //O(1)
+  int nasiento = ynodo.indexUltimo+1, inv1=0, inv2, maxconv, invelegido=ynodo.mesaAsignada[ynodo.indexUltimo]; //O(1)
   while(nasiento < n){ //O(n-1)*O(n-1) => O(n²)
 
     estansentados[invelegido] = true; //O(1) Hemos sentado el 0
@@ -132,12 +131,39 @@ pair<vector<int>,int> CS(const vector<vector<int>>& vProblema,
   const int n = vProblema.size();
   pair<vector<int>,int> cota, temporal;
   nodo auxnodo;
+  int mejor=0;
   for(int i = 0; i < n; i++){
     if(!ynodo.estanSentados[i]){
       AddComensal(ynodo, auxnodo, i);
       temporal = CI(vProblema, auxnodo);
-      if(temporal.second > cota.second)
+      if(temporal.second > cota.second){
         cota = temporal;
+        mejor = i;
+      }
+    }
+  }
+  
+  nodo aux2nodo;
+  AddComensal(ynodo, auxnodo, mejor);
+  for(int i = 0; i < n; i++){
+    if(!auxnodo.estanSentados[i]){
+      AddComensal(auxnodo, aux2nodo, i);
+      temporal = CI(vProblema, aux2nodo);
+      if(temporal.second > cota.second){
+        mejor = i;
+        cota = temporal;
+      }
+    }
+  }
+  AddComensal(auxnodo, auxnodo, mejor);
+  for(int i = 0; i < n; i++){
+    if(!auxnodo.estanSentados[i]){
+      AddComensal(auxnodo, aux2nodo, i);
+      temporal = CI(vProblema, aux2nodo);
+      if(temporal.second > cota.second){
+        mejor = i;
+        cota = temporal;
+      }
     }
   }
   return cota;
@@ -171,7 +197,7 @@ void SentarComensales(const vector<vector<int>>& preferencias, vector<int>& mesa
             CotaInferior.second = preftemporal;
           }
           else if(ynodo.indexUltimo < n-1 && (CotaSuperior = CS(preferencias, ynodo)).second
-              >= CotaInferior.second){
+              > CotaInferior.second){
             nodos.push(ynodo);
             Ctemporal = CI(preferencias, ynodo);
             if(Ctemporal.second > CotaInferior.second)
@@ -191,7 +217,6 @@ void Inicializar(nodo& elnodo, const int& n, int valor){
   elnodo.estanSentados.resize(n, false);
   elnodo.mesaAsignada.resize(n, -1);
   elnodo.indexUltimo = -1;
-  elnodo.valorInvitado = valor;
   if(valor != NULL_NODE){
     elnodo.indexUltimo++;
     elnodo.mesaAsignada[0] = valor;
@@ -201,17 +226,17 @@ void Inicializar(nodo& elnodo, const int& n, int valor){
 
 
 void AddComensal(const nodo& padre, nodo& hijo, int invitado){
-  if(&padre != &hijo){
-    hijo.estanSentados = padre.estanSentados;
-    hijo.estanSentados[invitado] = true;
-    hijo.mesaAsignada = padre.mesaAsignada;
-    hijo.indexUltimo = padre.indexUltimo+1;
-    hijo.mesaAsignada[hijo.indexUltimo]=invitado;
-    hijo.valorInvitado = invitado;
-  }else{
-    hijo.indexUltimo = hijo.indexUltimo+1;
-    hijo.mesaAsignada[hijo.indexUltimo] = invitado;
-    hijo.valorInvitado = invitado;
-    hijo.estanSentados[invitado] = true;
+  if(padre.indexUltimo != padre.mesaAsignada.size()-1){
+    if(&padre != &hijo){
+      hijo.estanSentados = padre.estanSentados;
+      hijo.estanSentados[invitado] = true;
+      hijo.mesaAsignada = padre.mesaAsignada;
+      hijo.indexUltimo = padre.indexUltimo+1;
+      hijo.mesaAsignada[hijo.indexUltimo]=invitado;
+    }else{
+      hijo.indexUltimo = hijo.indexUltimo+1;
+      hijo.mesaAsignada[hijo.indexUltimo] = invitado;
+      hijo.estanSentados[invitado] = true;
+    }
   }
 }
